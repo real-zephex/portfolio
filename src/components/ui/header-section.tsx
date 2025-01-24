@@ -16,13 +16,14 @@ const HeaderSection = async () => {
       </div>
       <div className="ml-4">
         <h2 className="text-4xl font-bold">
-          Hello <span className="text-teal-300">.</span>
+          Konichiwa <span className="text-teal-300">!</span>
         </h2>
         <p className="text-xl">
           I am{" "}
           <span className="text-transparent bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text">
             Sumit Kumar
           </span>
+          .
         </p>
       </div>
     </main>

@@ -13,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${kanit.className} antialiased`} data-theme="dark">
+    <html lang="en" className="lg:cursor-none">
+      <body className={`${kanit.className} antialiased `} data-theme="dark">
         {children}
       </body>
     </html>
