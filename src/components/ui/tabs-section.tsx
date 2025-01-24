@@ -152,7 +152,7 @@ const TabsSection = () => {
               ></path>
             </svg>
             <span>
-              I am currently working on a cms system. Stay tuned for more
+              I am currently working on a low-level cms. Stay tuned for more
               updates!
             </span>
           </div>
