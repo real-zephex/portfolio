@@ -5,6 +5,7 @@ import React, { JSX, useState } from "react";
 import { LuSchool, LuUniversity } from "react-icons/lu";
 import Toast from "../utils/toast";
 import "../../css/tabs-section.css";
+import Cards from "../utils/cards";
 
 const TabsSection = () => {
   const [element, setElement] = useState<JSX.Element>(<></>);
@@ -123,6 +124,54 @@ const TabsSection = () => {
             </p>
           </div>
         </div>
+
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab"
+          aria-label="Trainings"
+          onClick={() => handleToast("Viewing trainings...")}
+        />
+        <div role="tabpanel" className="tab-content p-4">
+          <div className="collapse bg-base-100">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+              AR/VR Training at NIELIT, Ropar
+            </div>
+            <div className="collapse-content">
+              <p>
+                I have completed a 5 day training on AR/VR at NIELIT, Ropar
+                where I learned the basics of AR/VR and developed a few
+                applications.
+              </p>
+
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
+                <Cards
+                  title="3D Donut"
+                  message="A 3D donut which changes color."
+                  url="https://doonut.glitch.me"
+                  image="/image.png"
+                />
+
+                <Cards
+                  title="Rain scenery"
+                  message="A rain scenery with actual rain particles, ocean, and a ball in the center."
+                  url="https://rain-aframe.glitch.me"
+                  image="/rain.png"
+                />
+
+                <Cards
+                  title="A 3D scenery, ig?"
+                  message="Well, look for yourself."
+                  url="https://idekwhatthehellisthis.glitch.me"
+                  image="/waste.png"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <input
           type="radio"
           name="my_tabs_1"
