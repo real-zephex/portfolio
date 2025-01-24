@@ -65,7 +65,7 @@ const TabsSection = async () => {
   return (
     <div
       role="tablist"
-      className="tabs tabs-bordered mt-2 w-full bg-base-300/75 rounded-xl"
+      className="tabs tabs-boxed mt-2 w-full bg-base-300/75 rounded-xl"
     >
       <input
         type="radio"
@@ -140,12 +140,12 @@ const TabsSection = async () => {
       />
       <div className="tab-content p-4 text-lg leading-relaxed">
         <p className="mb-4">
-          Hey there! Glad you made it here. Welcome to my portfolio! I&apos;m Sumit,
-          a first-year B.Tech student at LTSU Ropar specializing in Computer
-          Science with Cyber Security. While my academic focus is on security,
-          my interest truly lies in web development, Linux, and spending way too
-          much time playing Minecraft (I admit, I&apos;m not great at it, but it&apos;s
-          fun!).
+          Hey there! Glad you made it here. Welcome to my portfolio! I&apos;m
+          Sumit, a first-year B.Tech student at LTSU Ropar specializing in
+          Computer Science with Cyber Security. While my academic focus is on
+          security, my interest truly lies in web development, Linux, and
+          spending way too much time playing Minecraft (I admit, I&apos;m not
+          great at it, but it&apos;s fun!).
         </p>
 
         <p className="text-2xl font-semibold text-cyan-400 mb-2">Languages</p>
