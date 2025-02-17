@@ -18,7 +18,7 @@ const TabsSection = () => {
       title: "Dramalama",
       description:
         "A free media website powered by Typescript, Tailwind CSS, and DaisyUI",
-      link: "https://dramalama.netlify.app",
+      link: "https://free-media.netlify.app",
       linkText: "Dramalama",
       color: "text-sky-300",
       linkClass: "link-info",
@@ -27,7 +27,7 @@ const TabsSection = () => {
       title: "Mangathingy",
       description:
         "A free manga website powered by Typescript, Tailwind CSS, and DaisyUI with sign-in features to keep track of your reading progress.",
-      link: "https://mangathingy.netlify.app",
+      link: "https://read-mangas.netlify.app",
       linkText: "Mangathingy",
       color: "text-amber-300",
       linkClass: "link-accent",
