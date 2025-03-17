@@ -15,6 +15,14 @@ const TabsSection = () => {
   const miscellaneous = ["NextJS", "Bun", "Hono"];
   const data = [
     {
+      title: "OCR Utility",
+      description: "An OCR utility made using Google's Gemini 1.5 Flash.",
+      link: "https://rude-ocr.vercel.app",
+      linkText: "OCR Utility",
+      color: "text-purple-300",
+      linkClass: "link-primary"
+    },
+    {
       title: "Dramalama",
       description:
         "A free media website powered by Typescript, Tailwind CSS, and DaisyUI",
