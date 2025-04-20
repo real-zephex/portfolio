@@ -20,7 +20,7 @@ const TabsSection = () => {
       link: "https://rude-ocr.vercel.app",
       linkText: "OCR Utility",
       color: "text-purple-300",
-      linkClass: "link-primary"
+      linkClass: "link-primary",
     },
     {
       title: "Dramalama",
@@ -142,9 +142,9 @@ const TabsSection = () => {
           onClick={() => handleToast("Viewing trainings...")}
         />
         <div role="tabpanel" className="tab-content p-4">
-          <div className="collapse bg-base-100">
+          <div className="collapse bg-base-100 hover:bg-base-200 transition-colors">
             <input type="checkbox" />
-            <div className="collapse-title text-xl font-medium">
+            <div className="collapse-title text-xl font-semibold underline underline-offset-4">
               AR/VR Training at NIELIT, Ropar
             </div>
             <div className="collapse-content">
@@ -154,7 +154,7 @@ const TabsSection = () => {
                 applications.
               </p>
 
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 <Cards
                   title="3D Donut"
                   message="A 3D donut which changes color."

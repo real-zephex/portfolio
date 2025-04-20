@@ -13,7 +13,7 @@ const Cards = ({
   url: string;
 }) => {
   return (
-    <div className="bg-base-200 rounded-xl w-80 h-80 shadow-lg hover:bg-base-100 transition-colors active:scale-95 relative">
+    <div className="bg-base-200 rounded-xl w-auto h-72 shadow-lg hover:bg-base-100 transition-colors active:scale-95 relative">
       <Image
         src={image}
         quality={100}
@@ -25,7 +25,11 @@ const Cards = ({
       <div className="p-4">
         <h2 className="text-2xl font-bold">{title}</h2>
         <p className="line-clamp-2">{message}</p>
-        <Link href={url} target="_blank" className="absolute bottom-0 left-0 p-4">
+        <Link
+          href={url}
+          target="_blank"
+          className="absolute bottom-0 left-0 p-4"
+        >
           <button className="btn btn-outline btn-sm mt-2 btn-success">
             Visit
           </button>
