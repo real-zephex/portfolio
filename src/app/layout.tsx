@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { kanit } from "@/fonts/fonts";
+import AnimatedBackground from "@/components/ui/animated-background";
 
 export const metadata: Metadata = {
   title: "Sumit's Portfolio",
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="lg:cursor-none">
       <body className={`${kanit.className} antialiased `} data-theme="dark">
+        <AnimatedBackground />
         {children}
       </body>
     </html>
