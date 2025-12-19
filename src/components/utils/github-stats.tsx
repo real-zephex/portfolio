@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getRepoInfo } from "../lib/github";
 
 interface GitHubStats {
   stars: number;
@@ -20,12 +21,16 @@ const formatRelativeTime = (dateString: string): string => {
   if (diffInSeconds < 60) return "just now";
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-  if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
+  if (diffInSeconds < 2592000)
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  if (diffInSeconds < 31536000)
+    return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
   return `${Math.floor(diffInSeconds / 31536000)}y ago`;
 };
 
-const extractRepoInfo = (url: string): { owner: string; repo: string } | null => {
+const extractRepoInfo = (
+  url: string
+): { owner: string; repo: string } | null => {
   const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
   if (match) {
     return { owner: match[1], repo: match[2].replace(/\.git$/, "") };
@@ -48,25 +53,12 @@ const GitHubStatsComponent = ({ repoUrl }: GitHubStatsProps) => {
       }
 
       try {
-        const response = await fetch(
-          `https://api.github.com/repos/${repoInfo.owner}/${repoInfo.repo}`,
-          {
-            headers: {
-              Accept: "application/vnd.github.v3+json",
-            },
-            next: { revalidate: 3600 }, // Cache for 1 hour
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch");
-        }
-
-        const data = await response.json();
+        const data = await getRepoInfo({ repo: repoInfo.repo });
+        console.log(data);
         setStats({
-          stars: data.stargazers_count,
-          forks: data.forks_count,
-          updatedAt: data.updated_at,
+          stars: data.data.stargazers_count,
+          forks: data.data.forks_count,
+          updatedAt: data.data.updated_at,
         });
       } catch {
         setError(true);

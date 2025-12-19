@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.1",
     "daisyui": "^4.12.24",
     "next": "^16.1.0",
     "react": "^19.2.3",
