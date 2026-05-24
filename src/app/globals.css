@@ -46,6 +46,13 @@ body {
     box-shadow: 0 8px 32px var(--glass-shadow);
 }
 
+@media (max-width: 768px) {
+    .glass {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
 .glass-hover {
     transition: all 0.3s ease;
 }
@@ -276,71 +283,6 @@ body {
 }
 
 /* ============================================
-   PROFILE IMAGE STYLES
-   ============================================ */
-.profile-glow {
-    position: relative;
-}
-
-.profile-glow::before {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    background: linear-gradient(
-        135deg,
-        var(--primary),
-        var(--secondary),
-        var(--accent)
-    );
-    border-radius: 50%;
-    z-index: -1;
-    animation: profile-glow-pulse 3s ease-in-out infinite;
-}
-
-@keyframes profile-glow-pulse {
-    0%,
-    100% {
-        opacity: 0.6;
-        filter: blur(8px);
-    }
-    50% {
-        opacity: 1;
-        filter: blur(12px);
-    }
-}
-
-/* ============================================
-   TYPEWRITER EFFECT
-   ============================================ */
-.typewriter {
-    overflow: hidden;
-    border-right: 3px solid var(--primary);
-    white-space: nowrap;
-    animation:
-        typing 2s steps(20, end) forwards,
-        blink-caret 0.75s step-end infinite;
-}
-
-@keyframes typing {
-    from {
-        width: 0;
-    }
-    to {
-        width: 100%;
-    }
-}
-
-@keyframes blink-caret {
-    from,
-    to {
-        border-color: transparent;
-    }
-    50% {
-        border-color: var(--primary);
-    }
-}
-
-/* ============================================
    SCROLL INDICATOR
    ============================================ */
 .scroll-indicator {
@@ -430,6 +372,15 @@ body {
     color: rgba(255, 255, 255, 0.6);
 }
 
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .github-stat {
     display: flex;
     align-items: center;
@@ -439,4 +390,21 @@ body {
 .github-stat svg {
     width: 14px;
     height: 14px;
+}
+
+/* ============================================
+   ACCESSIBILITY: REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-delay: -1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        background-attachment: initial !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+    }
 }

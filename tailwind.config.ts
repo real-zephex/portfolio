@@ -59,7 +59,6 @@ export default {
         "shimmer": "shimmer 3s infinite",
         "gradient-shift": "gradient-shift 5s ease infinite",
         "bounce-slow": "bounce 2s infinite",
-        "pulse-glow": "profile-glow-pulse 3s ease-in-out infinite",
         "particle-float": "particle-float 15s linear infinite",
       },
       keyframes: {

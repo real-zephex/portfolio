@@ -25,17 +25,17 @@ const Cards = ({ title, message, image, url }: CardsProps) => {
       </div>
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-end p-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+      <div className="absolute inset-0 flex flex-col justify-end p-4 lg:translate-y-4 lg:group-hover:translate-y-0 transition-transform duration-300">
         <h2 className="text-xl font-bold text-white mb-1 drop-shadow-md">
           {title}
         </h2>
-        <p className="text-sm text-gray-200 line-clamp-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+        <p className="text-sm text-gray-200 line-clamp-2 mb-3 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 delay-100">
           {message}
         </p>
         <Link
           href={url}
           target="_blank"
-          className="btn btn-sm btn-primary w-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150"
+          className="btn btn-sm btn-primary w-full lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 delay-150"
         >
           View Demo
         </Link>

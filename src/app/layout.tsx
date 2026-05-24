@@ -3,8 +3,8 @@ import "./globals.css";
 import { kanit } from "@/fonts/fonts";
 
 export const metadata: Metadata = {
-  title: "Sumit's Portfolio",
-  description: "The official portfolio of Sumit Kumar.",
+  title: "zephex's Portfolio",
+  description: "The official portfolio of zephex.",
   metadataBase: new URL("https://next-learn-dashboard.vercel.sh"),
 };
 

@@ -24,9 +24,10 @@ import Toast from "../utils/toast";
 import Cards from "../utils/cards";
 import ProjectCard from "../utils/project-card";
 import SkillBadge from "../utils/skill-badge";
+import GitHubRepoList from "../utils/github-repo-list";
 
 const TabsSection = () => {
-  const [activeTab, setActiveTab] = useState("projects");
+  const [activeTab, setActiveTab] = useState("info");
   const [element, setElement] = useState<JSX.Element>(<></>);
 
   // Data
@@ -96,7 +97,7 @@ const TabsSection = () => {
       color: "text-teal-300",
       tags: ["Bun", "Hono", "TypeScript"],
       githubSupport: true,
-      order: 2,
+      order: 1,
       preview: "https://goodproxy.goodproxy.workers.dev",
     },
     {
@@ -108,7 +109,7 @@ const TabsSection = () => {
       color: "text-cyan-300",
       tags: ["Next.js", "AI", "TailwindCSS"],
       githubSupport: true,
-      order: 3,
+      order: 2,
       preview: "https://speedchat.vercel.app",
     },
     {
@@ -120,31 +121,7 @@ const TabsSection = () => {
       color: "text-sky-400",
       tags: ["Full Stack", "CMS", "Next.js", "Paid Project"],
       githubSupport: false,
-      order: 6,
-    },
-    {
-      title: "Dramalama",
-      description:
-        "A free media website powered by Typescript, Tailwind CSS, and DaisyUI",
-      link: "https://github.com/real-zephex/Dramalama",
-      linkText: "Dramalama",
-      color: "text-sky-300",
-      tags: ["Media", "Frontend", "DaisyUI"],
-      githubSupport: true,
-      order: 1,
-      preview: "https://free-media.netlify.app",
-    },
-    {
-      title: "Mangathingy",
-      description:
-        "A free manga website powered by Typescript, Tailwind CSS, and DaisyUI with sign-in features to keep track of your reading progress.",
-      link: "https://github.com/real-zephex/MangaThingy",
-      linkText: "Mangathingy",
-      color: "text-amber-300",
-      tags: ["Manga", "Auth", "Frontend"],
-      githubSupport: true,
-      order: 5,
-      preview: "https://read-mangas.netlify.app",
+      order: 3,
     },
   ];
 
@@ -168,22 +145,33 @@ const TabsSection = () => {
     { id: "qualifications", label: "Qualifications" },
     { id: "trainings", label: "Trainings" },
     { id: "projects", label: "Projects" },
+    { id: "all-repos", label: "All Repos" },
     { id: "info", label: "Info" },
   ];
 
   return (
     <main className="relative z-10 w-full max-w-5xl mx-auto px-4 pb-20">
-      <div className="flex flex-col items-center w-full mt-8">
+      <div className="flex flex-col items-center w-full mt-12 md:mt-24">
+        {/* Subtle Name Header */}
+        <div className="text-center mb-10 fade-in">
+          <h1 className="text-2xl md:text-3xl font-bold gradient-text tracking-tight">
+            zephex ⚡
+          </h1>
+          <p className="text-white/40 text-sm mt-1 uppercase tracking-widest font-medium">
+            Full-Stack Developer
+          </p>
+        </div>
+
         {/* Tabs Header */}
         <div
           role="tablist"
-          className="tabs tabs-glass p-2 rounded-2xl inline-flex justify-center mb-6"
+          className="tabs tabs-glass p-2 rounded-2xl flex justify-start md:justify-center mb-6 overflow-x-auto max-w-full no-scrollbar"
         >
           {tabs.map((tab) => (
             <button
               key={tab.id}
               role="tab"
-              className={`tab h-10 px-6 transition-all duration-300 ${
+              className={`tab h-10 px-4 md:px-6 transition-all duration-300 whitespace-nowrap ${
                 activeTab === tab.id
                   ? "tab-active bg-cyan-500/15 text-primary"
                   : "hover:bg-white/5"
@@ -199,7 +187,7 @@ const TabsSection = () => {
         </div>
 
         {/* Content Area */}
-        <div className="w-full glass rounded-3xl p-6 md:p-8 min-h-[400px] transition-all duration-500 fade-in">
+        <div className="w-full glass rounded-3xl p-6 md:p-8 min-h-[250px] md:min-h-[400px] transition-all duration-500 fade-in">
           {/* ==================== QUALIFICATIONS CONTENT ==================== */}
           {activeTab === "qualifications" && (
             <div className="space-y-8 animate-fade-in">
@@ -342,6 +330,32 @@ const TabsSection = () => {
             </div>
           )}
 
+          {/* ==================== ALL REPOS CONTENT ==================== */}
+          {activeTab === "all-repos" && (
+            <div className="animate-fade-in">
+              <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                <div>
+                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+                    <span className="w-2 h-8 bg-gradient-to-b from-primary to-accent rounded-full"></span>
+                    Open Source Repos
+                  </h3>
+                  <p className="text-white/60 mt-1 ml-5">
+                    Live feed of my public repositories from GitHub.
+                  </p>
+                </div>
+                <Link
+                  href="https://github.com/real-zephex"
+                  target="_blank"
+                  className="btn btn-sm btn-outline hover:btn-primary gap-2 self-start md:self-center"
+                >
+                  <FaGithub /> View Profile
+                </Link>
+              </div>
+
+              <GitHubRepoList />
+            </div>
+          )}
+
           {/* ==================== INFO CONTENT ==================== */}
           {activeTab === "info" && (
             <div className="animate-fade-in">
@@ -350,8 +364,9 @@ const TabsSection = () => {
                   About Me
                 </h3>
                 <p className="text-lg leading-relaxed text-white/80">
-                  Hey there! Welcome to my portfolio! I&apos;m Sumit, a
-                  first-year B.Tech student at LTSU Ropar specializing in
+                  Hey there! Welcome to my portfolio! I&apos;m{" "}
+                  <span className="font-bold text-white text-glow">Sumit</span>,
+                  a second-year B.Tech student at LTSU Ropar specializing in
                   Computer Science with Cyber Security. While my academic focus
                   is on security, my interest truly lies in
                   <span className="text-primary font-medium mx-1">
