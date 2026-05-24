@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { kanit } from "@/fonts/fonts";
+import { playfair, inter } from "@/fonts/fonts";
 
 export const metadata: Metadata = {
   title: "zephex's Portfolio",
@@ -14,8 +14,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="lg:cursor-none">
-      <body className={`${kanit.className} antialiased `} data-theme="dark">
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+      <body className="antialiased font-sans" data-theme="editorial">
         {children}
       </body>
     </html>

@@ -18,6 +18,7 @@ import {
   SiBun,
   SiHono,
   SiTailwindcss,
+  SiGo,
 } from "react-icons/si";
 
 import Toast from "../utils/toast";
@@ -32,6 +33,11 @@ const TabsSection = () => {
 
   // Data
   const languages = [
+    {
+      name: "Go",
+      icon: <SiGo className="text-cyan-500" />,
+      variant: "info" as const,
+    },
     {
       name: "Python",
       icon: <FaPython className="text-blue-400" />,
@@ -142,327 +148,205 @@ const TabsSection = () => {
   }
 
   const tabs = [
+    { id: "info", label: "Info" },
+    { id: "all-repos", label: "All Repos" },
     { id: "qualifications", label: "Qualifications" },
     { id: "trainings", label: "Trainings" },
-    { id: "projects", label: "Projects" },
-    { id: "all-repos", label: "All Repos" },
-    { id: "info", label: "Info" },
   ];
 
   return (
-    <main className="relative z-10 w-full max-w-5xl mx-auto px-4 pb-20">
-      <div className="flex flex-col items-center w-full mt-12 md:mt-24">
-        {/* Subtle Name Header */}
-        <div className="text-center mb-10 fade-in">
-          <h1 className="text-2xl md:text-3xl font-bold gradient-text tracking-tight">
-            zephex ⚡
-          </h1>
-          <p className="text-white/40 text-sm mt-1 uppercase tracking-widest font-medium">
-            Full-Stack Developer
-          </p>
-        </div>
+    <main className="relative z-10 w-full max-w-6xl mx-auto px-6 pb-20">
+      <div className="flex flex-col w-full mt-16 md:mt-32">
+        {/* Editorial Header */}
+        <header className="flex flex-col md:flex-row md:items-end justify-between mb-8 lg:mb-16 border-b-2 border-foreground pb-4 lg:pb-8 fade-up">
+          <div className="max-w-2xl">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl serif-title font-medium leading-tight">
+              zephex ⚡
+            </h1>
+            <p className="text-xl md:text-2xl mt-2 lg:mt-4 text-accent font-medium serif-title italic">
+              someone who enjoys coding
+            </p>
+          </div>
+          <div className="mt-8 md:mt-0 flex flex-col md:items-end justify-between">
+            <div className="text-left md:text-right mb-6 md:mb-0">
+            </div>
+          </div>
+        </header>
 
-        {/* Tabs Header */}
-        <div
-          role="tablist"
-          className="tabs tabs-glass p-2 rounded-2xl flex justify-start md:justify-center mb-6 overflow-x-auto max-w-full no-scrollbar"
-        >
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              role="tab"
-              className={`tab h-10 px-4 md:px-6 transition-all duration-300 whitespace-nowrap ${
-                activeTab === tab.id
-                  ? "tab-active bg-cyan-500/15 text-primary"
-                  : "hover:bg-white/5"
-              }`}
-              onClick={() => {
-                setActiveTab(tab.id);
-                // handleToast(`Viewing ${tab.label.toLowerCase()}...`);
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Navigation Sidebar/Top */}
+          <div className="lg:col-span-3">
+            <nav className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible no-scrollbar whitespace-nowrap gap-2 lg:gap-4 sticky top-12 -mx-6 px-6 lg:mx-0 lg:px-0">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  className={`text-left text-base md:text-lg py-2 border-b-2 lg:border-b-0 lg:border-l-4 px-3 md:px-4 transition-all duration-300 shrink-0 ${
+                    activeTab === tab.id
+                      ? "border-accent text-accent font-bold translate-x-1"
+                      : "border-transparent text-muted hover:text-foreground md:hover:translate-x-1"
+                  }`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+          </div>
 
-        {/* Content Area */}
-        <div className="w-full glass rounded-3xl p-6 md:p-8 min-h-[250px] md:min-h-[400px] transition-all duration-500 fade-in">
-          {/* ==================== QUALIFICATIONS CONTENT ==================== */}
-          {activeTab === "qualifications" && (
-            <div className="space-y-8 animate-fade-in">
-              {/* School */}
-              <div className="timeline-item">
-                <section className="flex items-center gap-4 mb-2">
-                  <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20">
-                    <LuSchool size={24} className="text-blue-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-blue-300">
-                      Kundan Vidya Mandir
-                    </h3>
-                    <p className="text-white/60 text-sm">2010 - 2024</p>
+          {/* Main Content Area */}
+          <div className="lg:col-span-9 min-h-[60vh] fade-in">
+            {/* ==================== INFO CONTENT ==================== */}
+            {activeTab === "info" && (
+              <div className="space-y-12">
+                <section>
+                  <h2 className="text-4xl serif-title mb-8 border-l-8 border-accent pl-6">About Me</h2>
+                  <div className="prose prose-xl max-w-none text-foreground/90 leading-relaxed">
+                    <p className="serif-title text-2xl italic leading-relaxed">
+                      Hey, I&apos;m{" "}
+                      <span className="font-bold underline decoration-accent decoration-4">zephex</span>. 
+                      I&apos;m a second-year B.Tech student studying Computer Science and Cyber Security.
+                    </p>
+                    <p className="mt-6 text-lg sans-body">
+                      I like to build things for the web that are fast, secure, and well-designed. 
+                      I spend most of my time working on <span className="text-accent font-semibold px-1">full-stack web development</span>, 
+                      building CLI tools, tinkering with Linux servers, and occasionally playing Minecraft. This site is a collection of my recent projects and experiments.
+                    </p>
                   </div>
                 </section>
-                <div className="glass p-4 rounded-xl ml-2">
-                  <ul className="list-disc list-inside space-y-1 text-white/80">
-                    <li>
-                      <span className="font-semibold text-primary">
-                        10th Grade:
-                      </span>{" "}
-                      89%
-                    </li>
-                    <li>
-                      <span className="font-semibold text-primary">
-                        12th Grade:
-                      </span>{" "}
-                      83.2%
-                    </li>
-                  </ul>
-                </div>
-              </div>
 
-              {/* University */}
-              <div className="timeline-item">
-                <section className="flex items-center gap-4 mb-2">
-                  <div className="p-3 rounded-xl bg-lime-500/10 border border-lime-500/20">
-                    <LuUniversity size={24} className="text-lime-400" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-muted/20">
+                  <div>
+                    <h3 className="text-xs uppercase tracking-tighter font-black text-muted mb-6">Languages</h3>
+                    <div className="flex flex-wrap gap-3">
+                      {languages.map((item, index) => (
+                        <span key={index} className="px-4 py-2 border border-foreground/10 editorial-card text-sm font-bold flex items-center gap-2">
+                          {item.icon} {item.name}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-lime-300">
-                      Lamrin Tech Skills University
-                    </h3>
-                    <p className="text-white/60 text-sm">2024 - 2028</p>
+                    <h3 className="text-xs uppercase tracking-tighter font-black text-muted mb-6">Frameworks</h3>
+                    <div className="flex flex-wrap gap-3">
+                      {miscellaneous.map((item, index) => (
+                        <span key={index} className="px-4 py-2 border border-foreground/10 editorial-card text-sm font-bold flex items-center gap-2">
+                          {item.icon} {item.name}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </section>
-                <div className="glass p-4 rounded-xl ml-2">
-                  <p className="text-white/80 leading-relaxed">
-                    B.Tech in Computer Science Engineering with specialization
-                    in
-                    <span className="text-accent font-medium ml-1">
-                      Cyber Security
-                    </span>
-                    .
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ==================== TRAININGS CONTENT ==================== */}
-          {activeTab === "trainings" && (
-            <div className="animate-fade-in">
-              <div className="p-6 border-b border-white/5 bg-white/5 rounded-t-2xl mb-6 -mt-6 -mx-6 md:-mx-8 md:-mt-8">
-                <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                  <span className="w-2 h-8 bg-gradient-to-b from-primary to-secondary rounded-full"></span>
-                  AR/VR Training
-                </h3>
-                <p className="text-white/60 mt-1 ml-5">
-                  5-day intensive training at NIELIT, Ropar on WebXR and
-                  A-Frame.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Cards
-                  title="3D Donut"
-                  message="A 3D donut which changes color."
-                  url="https://doonut.glitch.me"
-                  image="/image.png"
-                />
-                <Cards
-                  title="Rain Scenery"
-                  message="Immersive rain scenery with ocean and physics."
-                  url="https://rain-aframe.glitch.me"
-                  image="/rain.png"
-                />
-                <Cards
-                  title="3D Abstract"
-                  message="Abstract 3D world exploration."
-                  url="https://idekwhatthehellisthis.glitch.me"
-                  image="/waste.png"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* ==================== PROJECTS CONTENT ==================== */}
-          {activeTab === "projects" && (
-            <div className="animate-fade-in">
-              {/* Featured/Current Work */}
-              <div
-                role="alert"
-                className="alert glass shadow-glow-cyan mb-8 border-l-4 border-l-primary cursor-pointer hover:scale-[1.01] transition-transform"
-                onClick={() =>
-                  handleToast("Hold your horses! It's not ready yet!")
-                }
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="stroke-primary h-6 w-6 shrink-0 animate-pulse"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                <div>
-                  <h3 className="font-bold text-white">Currently Working On</h3>
-                  <div className="text-xs text-white/70">
-                    Jewelry shop e-commerce platform with full database and
-                    payment integration.
+                  <div>
+                    <h3 className="text-xs uppercase tracking-tighter font-black text-muted mb-6">Workflow</h3>
+                    <div className="flex flex-wrap gap-3">
+                      {tools.map((item, index) => (
+                        <span key={index} className="px-4 py-2 border border-foreground/10 editorial-card text-sm font-bold flex items-center gap-2">
+                          {item.icon} {item.name}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
+            )}
 
-              {/* Project Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-                {projects
-                  .sort((a, b) => a.order - b.order)
-                  .map((project, index) => (
-                    <ProjectCard key={index} {...project} index={index} />
-                  ))}
-              </div>
-            </div>
-          )}
-
-          {/* ==================== ALL REPOS CONTENT ==================== */}
-          {activeTab === "all-repos" && (
-            <div className="animate-fade-in">
-              <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                <div>
-                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                    <span className="w-2 h-8 bg-gradient-to-b from-primary to-accent rounded-full"></span>
-                    Open Source Repos
-                  </h3>
-                  <p className="text-white/60 mt-1 ml-5">
-                    Live feed of my public repositories from GitHub.
-                  </p>
-                </div>
-                <Link
-                  href="https://github.com/real-zephex"
-                  target="_blank"
-                  className="btn btn-sm btn-outline hover:btn-primary gap-2 self-start md:self-center"
-                >
-                  <FaGithub /> View Profile
-                </Link>
-              </div>
-
-              <GitHubRepoList />
-            </div>
-          )}
-
-          {/* ==================== INFO CONTENT ==================== */}
-          {activeTab === "info" && (
-            <div className="animate-fade-in">
-              <div className="glass p-6 rounded-2xl mb-8 bg-white/5">
-                <h3 className="text-2xl font-bold mb-4 gradient-text">
-                  About Me
-                </h3>
-                <p className="text-lg leading-relaxed text-white/80">
-                  Hey there! Welcome to my portfolio! I&apos;m{" "}
-                  <span className="font-bold text-white text-glow">Sumit</span>,
-                  a second-year B.Tech student at LTSU Ropar specializing in
-                  Computer Science with Cyber Security. While my academic focus
-                  is on security, my interest truly lies in
-                  <span className="text-primary font-medium mx-1">
-                    web development
-                  </span>
-                  , Linux, and spending way too much time playing Minecraft.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {/* Languages */}
-                <div>
-                  <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-400"></span>{" "}
-                    Languages
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {languages.map((item, index) => (
-                      <SkillBadge
-                        key={index}
-                        name={item.name}
-                        icon={item.icon}
-                        variant={item.variant}
-                      />
-                    ))}
+            {/* ==================== PROJECTS CONTENT ==================== */}
+            {/* activeTab === "projects" && (
+              <div className="space-y-12">
+                <div className="border-4 border-foreground p-8 relative">
+                  <div className="absolute -top-4 -right-4 bg-accent text-background px-4 py-1 text-xs font-black uppercase tracking-widest">
+                    Status: In Progress
                   </div>
+                  <h3 className="text-3xl serif-title font-bold mb-4">The Jewelry Archive</h3>
+                  <p className="text-lg opacity-80 mb-6">An e-commerce platform blending luxury aesthetics with high-performance payment orchestration.</p>
+                  <button className="btn-editorial" onClick={() => handleToast("Early access coming soon...")}>Learn More</button>
                 </div>
 
-                {/* Tools */}
-                <div>
-                  <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-orange-400"></span>{" "}
-                    Tools
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {tools.map((item, index) => (
-                      <SkillBadge
-                        key={index}
-                        name={item.name}
-                        icon={item.icon}
-                        variant={item.variant}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400"></span>{" "}
-                  Frameworks & Libraries
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {miscellaneous.map((item, index) => (
-                    <SkillBadge
-                      key={index}
-                      name={item.name}
-                      icon={item.icon}
-                      variant={item.variant}
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {projects.map((project, index) => (
+                    <div key={index} className="editorial-card p-8 group">
+                      <div className="flex justify-between items-start mb-6">
+                        <span className="text-4xl font-black text-foreground/10 group-hover:text-accent/20 transition-colors">0{index + 1}</span>
+                        <div className="flex gap-2">
+                          {project.tags.map((tag, tIndex) => (
+                            <span key={tIndex} className="text-[10px] uppercase font-bold tracking-tighter border border-foreground/20 px-2 py-0.5">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <h3 className="text-2xl serif-title font-bold mb-3">{project.title}</h3>
+                      <p className="text-muted text-sm leading-relaxed mb-8">{project.description}</p>
+                      <Link href={project.link} target="_blank" className="text-sm font-black uppercase tracking-widest border-b-2 border-accent hover:border-foreground transition-all">
+                        View Case Study
+                      </Link>
+                    </div>
                   ))}
                 </div>
               </div>
+            ) */}
 
-              {/* Contact Section */}
-              <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="text-white/60">
-                  Or drop me an email at{" "}
-                  <Link
-                    href="mailto:zephex@duck.com"
-                    className="text-primary hover:text-primary-300 hover:underline transition-all"
-                  >
-                    zephex@duck.com
-                  </Link>
-                </div>
-
-                <div className="flex gap-3">
-                  <Link
-                    href="https://github.com/real-zephex"
-                    target="_blank"
-                    className="btn btn-sm btn-outline hover:btn-primary"
-                  >
-                    <FaGithub className="mr-2" /> GitHub
-                  </Link>
-                  <Link
-                    href="https://www.linkedin.com/in/zephex/"
-                    target="_blank"
-                    className="btn btn-sm btn-outline hover:btn-secondary text-white"
-                  >
-                    <FaLinkedin className="mr-2" /> LinkedIn
-                  </Link>
+            {/* ==================== ALL REPOS CONTENT ==================== */}
+            {activeTab === "all-repos" && (
+              <div className="space-y-8">
+                <header className="flex justify-between items-center border-b border-foreground/10 pb-6">
+                  <h2 className="text-2xl md:text-3xl serif-title">The Repository Feed</h2>
+                  <Link href="https://github.com/real-zephex" target="_blank" className="btn-editorial text-xs">Profile ↗</Link>
+                </header>
+                <div className="grid grid-cols-1 gap-4">
+                  <GitHubRepoList />
                 </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {/* ==================== QUALIFICATIONS CONTENT ==================== */}
+            {activeTab === "qualifications" && (
+              <div className="space-y-12">
+                <div className="border-l-4 border-foreground pl-8 py-4">
+                  <span className="text-xs uppercase font-black text-muted">Academic Path</span>
+                  <div className="mt-8 space-y-16">
+                    <div>
+                      <h3 className="text-2xl md:text-3xl serif-title font-bold italic">Lamrin Tech Skills University</h3>
+                      <p className="text-accent font-bold mt-1">2024 — Present</p>
+                      <p className="mt-4 text-base md:text-lg">B.Tech in Computer Science Engineering (Cyber Security Specialist)</p>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl md:text-3xl serif-title font-bold italic">Kundan Vidya Mandir</h3>
+                      <p className="text-accent font-bold mt-1">2010 — 2024</p>
+                      <p className="mt-4 text-base md:text-lg">Secondary & Senior Secondary Education</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================== TRAININGS CONTENT ==================== */}
+            {activeTab === "trainings" && (
+              <div className="space-y-12">
+                <div className="max-w-3xl">
+                  <div className="bg-foreground text-background p-6 md:p-8">
+                    <h3 className="text-2xl md:text-3xl serif-title italic mb-4">AR/VR Deep Dive</h3>
+                    <p className="text-xs md:text-sm opacity-80 uppercase tracking-widest">NIELIT Ropar • 5 Days</p>
+                    <p className="mt-6">Intensive exploration of WebXR, A-Frame, and immersive spatial design.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Editorial Footer */}
+        <footer className="mt-16 md:mt-32 pt-12 md:pt-16 border-t-2 border-foreground flex flex-col md:flex-row justify-between items-start gap-12">
+          <div className="max-w-xs">
+            <h4 className="text-xl serif-title font-bold mb-4">Let&apos;s talk shop.</h4>
+            <p className="text-muted text-sm">Open for collaborative projects and research opportunities in Web & Security.</p>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] uppercase font-black text-muted tracking-[0.2em]">Contact</span>
+            <Link href="mailto:zephex@duck.com" className="text-xl md:text-2xl break-all serif-title italic hover:text-accent transition-colors">zephex@duck.com</Link>
+          </div>
+          <div className="flex gap-8">
+            <Link href="https://github.com/real-zephex" target="_blank" className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all">GitHub</Link>
+            <Link href="https://www.linkedin.com/in/zephex/" target="_blank" className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all">LinkedIn</Link>
+          </div>
+        </footer>
       </div>
       {element}
     </main>

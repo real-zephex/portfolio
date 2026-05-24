@@ -1,7 +1,11 @@
-import { Kanit } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 
-export const kanit = Kanit({
-  variable: "--font-kanit",
-  weight: ["400", "600", "800"],
+export const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+});
+
+export const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
