@@ -52,6 +52,10 @@ body {
     border-color: var(--ink);
 }
 
+.section-label {
+    @apply text-[10px] uppercase font-black tracking-[0.2em] text-muted mb-5;
+}
+
 .btn-editorial {
     @apply border-2 border-foreground bg-transparent text-foreground px-6 py-2 transition-all duration-300 font-medium;
 }

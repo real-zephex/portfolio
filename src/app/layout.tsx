@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { playfair, inter } from "@/fonts/fonts";
+import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   title: "zephex's Portfolio",
@@ -15,6 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+      <Analytics />
       <body className="antialiased font-sans" data-theme="editorial">
         {children}
       </body>
