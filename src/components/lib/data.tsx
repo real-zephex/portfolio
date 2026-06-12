@@ -35,6 +35,13 @@ export interface Training {
   description: string;
 }
 
+export interface Subdomain {
+  name: string;
+  url: string;
+  description: string;
+  order: number;
+}
+
 export interface TabConfig {
   id: string;
   label: string;
@@ -135,8 +142,30 @@ export const trainings: Training[] = [
   },
 ];
 
+export const subdomains: Subdomain[] = [
+  {
+    name: "Free Media",
+    url: "https://fm.zephex.in",
+    description: "A free-media website for downloading and streaming digital content.",
+    order: 1,
+  },
+  {
+    name: "Speed Chat",
+    url: "https://speedchat.zephex.in",
+    description: "Privacy-first AI chat aggregator featuring lightning-fast LLMs.",
+    order: 2,
+  },
+  {
+    name: "Otaku Oasis",
+    url: "https://otakuoasis.zephex.in",
+    description: "Dedicated manga platform for a high-performance reading experience.",
+    order: 3,
+  },
+];
+
 export const tabs: TabConfig[] = [
   { id: "info", label: "Info" },
+  { id: "apps", label: "Apps" },
   { id: "repos", label: "Repos" },
   { id: "qualifications", label: "Education" },
   { id: "trainings", label: "Trainings" },

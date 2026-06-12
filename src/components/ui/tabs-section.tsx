@@ -12,6 +12,7 @@ import {
   projects,
   qualifications,
   trainings,
+  subdomains,
   tabs,
 } from "@/components/lib/data";
 import type { TabConfig } from "@/components/lib/data";
@@ -76,6 +77,8 @@ const TabsSection = () => {
     switch (tabId) {
       case "info":
         return <InfoContent />;
+      case "apps":
+        return <AppsContent />;
       case "repos":
         return <ReposContent />;
       case "qualifications":
@@ -318,6 +321,54 @@ const InfoContent = () => {
           ))}
         </div>
       </section>
+    </div>
+  );
+};
+
+/* ──────────────── Apps Content ──────────────── */
+
+const AppsContent = () => {
+  return (
+    <div className="space-y-12">
+      <header className="flex justify-between items-center border-b border-foreground/10 pb-6">
+        <h2 className="text-2xl md:text-3xl serif-title">Live Subdomains</h2>
+        <span className="text-[10px] uppercase font-black tracking-widest text-muted">
+          Hosted on zephex.in
+        </span>
+      </header>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {subdomains.map((app, index) => (
+          <div
+            key={app.name}
+            className="editorial-card p-8 group fade-up"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <div className="flex justify-between items-start mb-6">
+              <span className="text-4xl font-black text-foreground/10 group-hover:text-accent/20 transition-colors">
+                0{app.order}
+              </span>
+              <div className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center text-[10px] font-black text-muted">
+                LIVE
+              </div>
+            </div>
+            <h3 className="text-xl serif-title font-bold mb-2">{app.name}</h3>
+            <p className="text-accent text-xs font-bold mb-4 tracking-tight">
+              {app.url.replace("https://", "")}
+            </p>
+            <p className="text-muted text-sm leading-relaxed mb-8">
+              {app.description}
+            </p>
+            <Link
+              href={app.url}
+              target="_blank"
+              className="text-sm font-black uppercase tracking-widest border-b-2 border-accent hover:border-foreground transition-all"
+            >
+              Visit Platform ↗
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
