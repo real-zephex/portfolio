@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CORS Proxy Demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #f5f4f0;
+      --color-background-tertiary: #eceae3;
+      --color-background-info: #e6f1fb;
+      --color-background-danger: #fcebeb;
+      --color-background-success: #eaf3de;
+      --color-background-warning: #faeeda;
+      --color-text-primary: #1a1a18;
+      --color-text-secondary: #5f5e5a;
+      --color-text-tertiary: #888780;
+      --color-text-info: #185fa5;
+      --color-text-danger: #a32d2d;
+      --color-text-success: #3b6d11;
+      --color-text-warning: #854f0b;
+      --color-border-tertiary: rgba(0,0,0,0.15);
+      --color-border-secondary: rgba(0,0,0,0.3);
+      --color-border-primary: rgba(0,0,0,0.4);
+      --color-border-info: #85b7eb;
+      --color-border-danger: #f09595;
+      --color-border-success: #97c459;
+      --border-radius-md: 8px;
+      --border-radius-lg: 12px;
+      --font-sans: system-ui, -apple-system, sans-serif;
+      --font-mono: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-background-primary: #1e1e1c;
+        --color-background-secondary: #2a2a28;
+        --color-background-tertiary: #333330;
+        --color-background-info: #0c447c22;
+        --color-background-danger: #79202022;
+        --color-background-success: #27500a22;
+        --color-background-warning: #63380622;
+        --color-text-primary: #e8e6de;
+        --color-text-secondary: #b4b2a9;
+        --color-text-tertiary: #888780;
+        --color-text-info: #85b7eb;
+        --color-text-danger: #f09595;
+        --color-text-success: #97c459;
+        --color-text-warning: #fac775;
+        --color-border-tertiary: rgba(255,255,255,0.12);
+        --color-border-secondary: rgba(255,255,255,0.22);
+        --color-border-primary: rgba(255,255,255,0.35);
+        --color-border-info: #185fa5;
+        --color-border-danger: #a32d2d;
+        --color-border-success: #3b6d11;
+      }
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-background-primary);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .scene { padding: 0; }
+
+    .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+    .tab {
+      padding: 7px 20px;
+      border-radius: var(--border-radius-md);
+      border: 0.5px solid var(--color-border-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--color-text-secondary);
+      transition: all .2s;
+      font-family: var(--font-sans);
+    }
+    .tab.active {
+      background: var(--color-background-info);
+      color: var(--color-text-info);
+      border-color: transparent;
+    }
+
+    .nodes-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      position: relative;
+      min-height: 100px;
+    }
+
+    .node-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 90px;
+    }
+
+    .node-icon {
+      width: 54px; height: 54px;
+      border-radius: var(--border-radius-lg);
+      border: 0.5px solid var(--color-border-secondary);
+      background: var(--color-background-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      position: relative;
+      transition: box-shadow .3s;
+    }
+    @keyframes pulseOk {
+      0%,100% { box-shadow: none; }
+      50% { box-shadow: 0 0 0 6px var(--color-background-success); }
+    }
+    @keyframes pulseErr {
+      0%,100% { box-shadow: none; }
+      50% { box-shadow: 0 0 0 6px var(--color-background-danger); }
+    }
+    .node-icon.pulse-ok { animation: pulseOk .5s ease; }
+    .node-icon.pulse-err { animation: pulseErr .5s ease; }
+
+    .node-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      text-align: center;
+      max-width: 90px;
+      line-height: 1.4;
+    }
+
+    .arrow-seg {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 32px;
+      max-width: 80px;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+
+    .arrow-seg svg { width: 100%; height: 24px; overflow: visible; }
+
+    .arrow-label {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .packet {
+      position: absolute;
+      top: -6px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .wall-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      flex-shrink: 0;
+      gap: 4px;
+    }
+    .wall-bar {
+      width: 10px;
+      border-radius: 3px;
+      background: #E24B4A;
+    }
+    .wall-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: #A32D2D;
+      text-align: center;
+    }
+
+    .status-bar {
+      margin-top: 1.25rem;
+      padding: 10px 14px;
+      border-radius: var(--border-radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 0.5px solid var(--color-border-tertiary);
+      background: var(--color-background-secondary);
+      color: var(--color-text-secondary);
+      transition: all .3s;
+    }
+    .status-bar.err {
+      background: var(--color-background-danger);
+      color: var(--color-text-danger);
+      border-color: var(--color-border-danger);
+    }
+    .status-bar.ok {
+      background: var(--color-background-success);
+      color: var(--color-text-success);
+      border-color: var(--color-border-success);
+    }
+    .status-bar.info {
+      background: var(--color-background-info);
+      color: var(--color-text-info);
+      border-color: var(--color-border-info);
+    }
+
+    .code-block {
+      margin-top: 1rem;
+      background: var(--color-background-secondary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-md);
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .code-block .k { color: var(--color-text-info); }
+    .code-block .s { color: var(--color-text-success); }
+    .code-block .c { color: var(--color-text-tertiary); }
+
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: var(--border-radius-md);
+      border: 0.5px solid var(--color-border-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--color-text-primary);
+      transition: background .15s;
+      margin-top: 1rem;
+      font-family: var(--font-sans);
+    }
+    .play-btn:hover { background: var(--color-background-secondary); }
+    .play-btn:disabled { opacity: .5; cursor: default; }
+
+    .scene-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-bottom: .35rem;
+    }
+    .scene-desc {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-bottom: 1.25rem;
+      line-height: 1.6;
+    }
+    code {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      background: var(--color-background-tertiary);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="scene">
+
+    <div class="tabs">
+      <button class="tab active" id="tab-before" onclick="showScene('before')">Before — CORS blocked</button>
+      <button class="tab" id="tab-after" onclick="showScene('after')">After — CORS proxy</button>
+    </div>
+
+    <!-- BEFORE -->
+    <div id="scene-before">
+      <p class="scene-title">Direct cross-origin request</p>
+      <p class="scene-desc">Your browser sends a request directly to a different origin. The browser enforces the Same-Origin Policy — if the server doesn't respond with the right <code>Access-Control-Allow-Origin</code> header, the response is blocked before your code ever sees it.</p>
+
+      <div class="nodes-row" id="before-nodes">
+        <div class="node-box">
+          <div class="node-icon" id="b-browser">🌐</div>
+          <div class="node-label">Your browser<br><span style="font-size:10px;color:var(--color-text-tertiary)">origin-a.com</span></div>
+        </div>
+
+        <div class="arrow-seg" id="b-seg1" style="position:relative">
+          <svg viewBox="0 0 100 24" preserveAspectRatio="none">
+            <defs>
+              <marker id="ah1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 2L8 5L2 8" fill="none" stroke="var(--color-border-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <line x1="4" y1="12" x2="96" y2="12" stroke="var(--color-border-primary)" stroke-width="1.5" marker-end="url(#ah1)"/>
+          </svg>
+          <div class="arrow-label">fetch()</div>
+          <div class="packet" id="b-pkt1" style="background:#378ADD;color:#fff">REQ</div>
+        </div>
+
+        <div class="wall-box" id="b-wall">
+          <div style="display:flex;flex-direction:column;gap:3px;align-items:center">
+            <div class="wall-bar" style="height:10px"></div>
+            <div class="wall-bar" style="height:14px"></div>
+            <div class="wall-bar" style="height:8px"></div>
+            <div class="wall-bar" style="height:12px"></div>
+            <div class="wall-bar" style="height:10px"></div>
+          </div>
+          <div class="wall-label">CORS<br>policy</div>
+        </div>
+
+        <div class="arrow-seg" id="b-seg2" style="position:relative">
+          <svg viewBox="0 0 100 24" preserveAspectRatio="none">
+            <defs>
+              <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 2L8 5L2 8" fill="none" stroke="var(--color-border-secondary)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <line x1="4" y1="12" x2="96" y2="12" stroke="var(--color-border-secondary)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ah2)"/>
+          </svg>
+          <div class="arrow-label">blocked</div>
+          <div class="packet" id="b-pkt2" style="background:#E24B4A;color:#fff">❌</div>
+        </div>
+
+        <div class="node-box">
+          <div class="node-icon" id="b-server">🖥️</div>
+          <div class="node-label">API server<br><span style="font-size:10px;color:var(--color-text-tertiary)">api.other.com</span></div>
+        </div>
+      </div>
+
+      <div class="status-bar" id="b-status">
+        <i class="ti ti-player-play"></i> Press play to simulate a cross-origin request
+      </div>
+
+      <div class="code-block"><span class="c">// Error in browser console</span>
+<span class="k">Access to fetch</span> <span class="s">'https://api.other.com/data'</span> <span class="k">from</span>
+origin <span class="s">'https://origin-a.com'</span> has been blocked by CORS policy:
+No <span class="s">'Access-Control-Allow-Origin'</span> header is present.</div>
+
+      <button class="play-btn" id="b-play-btn" onclick="playBefore()">
+        <i class="ti ti-player-play"></i> Play animation
+      </button>
+    </div>
+
+    <!-- AFTER -->
+    <div id="scene-after" style="display:none">
+      <p class="scene-title">Request routed through a CORS proxy</p>
+      <p class="scene-desc">A CORS proxy sits between your browser and the target API. Because it runs server-side, it's not bound by the browser's Same-Origin Policy. It forwards your request, gets the response, and adds <code>Access-Control-Allow-Origin: *</code> before sending it back.</p>
+
+      <div class="nodes-row" id="after-nodes">
+        <div class="node-box">
+          <div class="node-icon" id="a-browser">🌐</div>
+          <div class="node-label">Your browser<br><span style="font-size:10px;color:var(--color-text-tertiary)">origin-a.com</span></div>
+        </div>
+
+        <div class="arrow-seg" id="a-seg1" style="position:relative">
+          <svg viewBox="0 0 80 24" preserveAspectRatio="none">
+            <defs>
+              <marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 2L8 5L2 8" fill="none" stroke="var(--color-border-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <line x1="4" y1="12" x2="76" y2="12" stroke="var(--color-border-primary)" stroke-width="1.5" marker-end="url(#ah3)"/>
+          </svg>
+          <div class="arrow-label">fetch(proxy)</div>
+          <div class="packet" id="a-pkt1" style="background:#378ADD;color:#fff">REQ</div>
+        </div>
+
+        <div class="node-box">
+          <div class="node-icon" id="a-proxy">🔄</div>
+          <div class="node-label">CORS proxy<br><span style="font-size:10px;color:var(--color-text-tertiary)">proxy.server</span></div>
+        </div>
+
+        <div class="arrow-seg" id="a-seg2" style="position:relative">
+          <svg viewBox="0 0 80 24" preserveAspectRatio="none">
+            <defs>
+              <marker id="ah4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 2L8 5L2 8" fill="none" stroke="var(--color-border-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <line x1="4" y1="12" x2="76" y2="12" stroke="var(--color-border-primary)" stroke-width="1.5" marker-end="url(#ah4)"/>
+          </svg>
+          <div class="arrow-label">forward</div>
+          <div class="packet" id="a-pkt2" style="background:#1D9E75;color:#fff">REQ</div>
+        </div>
+
+        <div class="node-box">
+          <div class="node-icon" id="a-server">🖥️</div>
+          <div class="node-label">API server<br><span style="font-size:10px;color:var(--color-text-tertiary)">api.other.com</span></div>
+        </div>
+      </div>
+
+      <!-- Return path -->
+      <div class="nodes-row" style="margin-top:8px;flex-direction:row-reverse">
+        <div class="node-box" style="opacity:0;pointer-events:none"><div style="width:54px;height:54px"></div></div>
+        <div class="arrow-seg" id="a-rseg1" style="position:relative">
+          <svg viewBox="0 0 80 24" preserveAspectRatio="none">
+            <defs>
+              <marker id="ah5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 2L8 5L2 8" fill="none" stroke="var(--color-border-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <line x1="76" y1="12" x2="4" y2="12" stroke="var(--color-border-primary)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah5)"/>
+          </svg>
+          <div class="arrow-label">+CORS header</div>
+          <div class="packet" id="a-rpkt1" style="background:#1D9E75;color:#fff">RES</div>
+        </div>
+        <div class="node-box" style="opacity:0;pointer-events:none"><div style="width:54px;height:54px"></div></div>
+        <div class="arrow-seg" id="a-rseg2" style="position:relative">
+          <svg viewBox="0 0 80 24" preserveAspectRatio="none">
+            <defs>
+              <marker id="ah6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 2L8 5L2 8" fill="none" stroke="var(--color-border-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              </marker>
+            </defs>
+            <line x1="76" y1="12" x2="4" y2="12" stroke="var(--color-border-primary)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah6)"/>
+          </svg>
+          <div class="arrow-label">raw response</div>
+          <div class="packet" id="a-rpkt2" style="background:#1D9E75;color:#fff">RES</div>
+        </div>
+        <div class="node-box" style="opacity:0;pointer-events:none"><div style="width:54px;height:54px"></div></div>
+      </div>
+
+      <div class="status-bar" id="a-status">
+        <i class="ti ti-player-play"></i> Press play to simulate the proxied request
+      </div>
+
+      <div class="code-block"><span class="c">// Prefix your URL with the proxy</span>
+<span class="k">const</span> url = <span class="s">'https://corsproxy.io/?url=https://api.other.com/data'</span>;
+<span class="k">const</span> res = <span class="k">await</span> fetch(url);
+<span class="c">// Response now carries:</span>
+<span class="c">// Access-Control-Allow-Origin: *  ✓</span></div>
+
+      <button class="play-btn" id="a-play-btn" onclick="playAfter()">
+        <i class="ti ti-player-play"></i> Play animation
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showScene(s) {
+  document.getElementById('scene-before').style.display = s === 'before' ? '' : 'none';
+  document.getElementById('scene-after').style.display  = s === 'after'  ? '' : 'none';
+  document.getElementById('tab-before').classList.toggle('active', s === 'before');
+  document.getElementById('tab-after').classList.toggle('active',  s === 'after');
+}
+
+function pulse(el, type) {
+  el.classList.remove('pulse-ok', 'pulse-err');
+  void el.offsetWidth;
+  el.classList.add(type === 'ok' ? 'pulse-ok' : 'pulse-err');
+  setTimeout(() => el.classList.remove('pulse-ok', 'pulse-err'), 700);
+}
+
+function setStatus(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = 'status-bar ' + type;
+  const icons = { err: 'ti-x', ok: 'ti-check', info: 'ti-info-circle', '': 'ti-player-play' };
+  el.innerHTML = `<i class="ti ${icons[type] || 'ti-player-play'}"></i> ${msg}`;
+}
+
+let bRunning = false, aRunning = false;
+
+function playBefore() {
+  if (bRunning) return;
+  bRunning = true;
+  const btn = document.getElementById('b-play-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader"></i> Running...';
+
+  setStatus('b-status', 'info', 'Sending fetch() to api.other.com...');
+
+  const seg1 = document.getElementById('b-seg1');
+  const pkt1 = document.getElementById('b-pkt1');
+  pkt1.style.left = '0px';
+  pkt1.style.opacity = '1';
+  pkt1.style.transition = 'none';
+  pkt1.offsetHeight;
+  pkt1.style.transition = 'left 700ms linear';
+  pkt1.style.left = (seg1.offsetWidth - 13) + 'px';
+
+  setTimeout(() => {
+    pkt1.style.opacity = '0';
+    const wall = document.getElementById('b-wall');
+    wall.style.transition = 'transform .08s';
+    wall.style.transform = 'translateX(-4px)';
+    setTimeout(() => { wall.style.transform = 'translateX(4px)'; }, 80);
+    setTimeout(() => { wall.style.transform = 'translateX(-3px)'; }, 160);
+    setTimeout(() => { wall.style.transform = 'translateX(0)'; }, 240);
+
+    setStatus('b-status', 'err', 'CORS preflight failed — browser blocked the response.');
+    pulse(document.getElementById('b-browser'), 'err');
+
+    const pkt2 = document.getElementById('b-pkt2');
+    const seg2 = document.getElementById('b-seg2');
+    pkt2.style.left = '0px';
+    pkt2.style.opacity = '1';
+    pkt2.style.transition = 'none';
+    pkt2.offsetHeight;
+    pkt2.style.transition = 'left 600ms linear';
+    pkt2.style.left = (seg2.offsetWidth - 13) + 'px';
+    setTimeout(() => { pkt2.style.opacity = '0'; }, 600);
+  }, 700);
+
+  setTimeout(() => {
+    bRunning = false;
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ti ti-refresh"></i> Replay';
+  }, 1800);
+}
+
+function playAfter() {
+  if (aRunning) return;
+  aRunning = true;
+  const btn = document.getElementById('a-play-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader"></i> Running...';
+
+  setStatus('a-status', 'info', 'Sending request to CORS proxy...');
+
+  function movePkt(pktId, segId, dir, duration, cb) {
+    const pkt = document.getElementById(pktId);
+    const seg = document.getElementById(segId);
+    const w = seg.offsetWidth - 13;
+    pkt.style.left = (dir === 'ltr' ? '0px' : w + 'px');
+    pkt.style.opacity = '1';
+    pkt.style.transition = 'none';
+    pkt.offsetHeight;
+    pkt.style.transition = `left ${duration}ms linear`;
+    pkt.style.left = (dir === 'ltr' ? w : 0) + 'px';
+    setTimeout(() => { pkt.style.opacity = '0'; if (cb) cb(); }, duration);
+  }
+
+  const T = 550;
+  movePkt('a-pkt1', 'a-seg1', 'ltr', T, () => {
+    pulse(document.getElementById('a-proxy'), 'ok');
+    setTimeout(() => {
+      setStatus('a-status', 'info', 'Proxy forwarding to api.other.com...');
+      movePkt('a-pkt2', 'a-seg2', 'ltr', T, () => {
+        pulse(document.getElementById('a-server'), 'ok');
+        setTimeout(() => {
+          setStatus('a-status', 'info', 'API responded — proxy adding CORS header...');
+          movePkt('a-rpkt2', 'a-rseg2', 'rtl', T, () => {
+            pulse(document.getElementById('a-proxy'), 'ok');
+            setTimeout(() => {
+              movePkt('a-rpkt1', 'a-rseg1', 'rtl', T, () => {
+                pulse(document.getElementById('a-browser'), 'ok');
+                setStatus('a-status', 'ok', 'Response received with Access-Control-Allow-Origin: * ✓');
+                aRunning = false;
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ti ti-refresh"></i> Replay';
+              });
+            }, 200);
+          });
+        }, 200);
+      });
+    }, 200);
+  });
+}
+</script>
+</body>
+</html>
