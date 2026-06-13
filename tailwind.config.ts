@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         serif: ["var(--font-playfair)", "serif"],
-        sans: ["var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-dm-sans)", "sans-serif"],
       },
       colors: {
         background: "var(--background)",
@@ -24,6 +24,9 @@ export default {
       animation: {
         "fade-up": "fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "fade-in": "fadeIn 0.5s ease forwards",
+        blink: "blink 1s step-end infinite",
+        "reveal-width": "revealWidth 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "slide-down": "slideDown 0.4s ease forwards",
       },
       keyframes: {
         fadeUp: {

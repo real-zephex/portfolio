@@ -1,11 +1,11 @@
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, DM_Sans } from "next/font/google";
 
 export const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
 });
 
-export const inter = Inter({
-  variable: "--font-inter",
+export const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
 });

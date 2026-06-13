@@ -9,18 +9,14 @@ import {
   languages,
   tools,
   miscellaneous,
-  projects,
   qualifications,
   trainings,
   subdomains,
   tabs,
 } from "@/components/lib/data";
-import type { TabConfig } from "@/components/lib/data";
 
 const TabsSection = () => {
   const [activeTab, setActiveTab] = useState("info");
-  const [visibleTab, setVisibleTab] = useState("info");
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [element, setElement] = useState<JSX.Element>(<></>);
   const [toastTimeout, setToastTimeout] = useState<NodeJS.Timeout | null>(null);
 
@@ -43,35 +39,11 @@ const TabsSection = () => {
 
   const handleTabSwitch = useCallback(
     (tabId: string) => {
-      if (tabId === activeTab || isTransitioning) return;
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setActiveTab(tabId);
-        setVisibleTab(tabId);
-        setTimeout(() => setIsTransitioning(false), 50);
-      }, 150);
+      if (tabId === activeTab) return;
+      setActiveTab(tabId);
     },
-    [activeTab, isTransitioning]
+    [activeTab]
   );
-
-  const renderTabContent = (tab: TabConfig) => {
-    const isActive = visibleTab === tab.id;
-    const isEntering = activeTab === tab.id && isActive;
-
-    const className = `transition-all duration-300 ease-out min-h-[50vh] ${
-      isActive
-        ? isEntering
-          ? "opacity-100 translate-y-0"
-          : "opacity-100 translate-y-0"
-        : "opacity-0 translate-y-4 absolute pointer-events-none invisible"
-    }`;
-
-    return (
-      <div key={tab.id} className={className}>
-        {renderContent(tab.id)}
-      </div>
-    );
-  };
 
   const renderContent = (tabId: string) => {
     switch (tabId) {
@@ -94,23 +66,26 @@ const TabsSection = () => {
     <main className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-6 pb-20">
       <div className="flex flex-col w-full mt-16 md:mt-32">
         {/* Hero */}
-        <header className="relative mb-16 lg:mb-20 pb-12 lg:pb-16 border-b border-foreground/20 fade-up">
-          <div className="absolute -top-8 right-0 w-32 h-32 opacity-10 bg-[radial-gradient(circle,_var(--accent)_1px,_transparent_1px)] bg-[length:12px_12px] pointer-events-none" />
+        <header className="relative mb-16 lg:mb-20 pb-12 lg:pb-16">
+          {/* Vertical decorative rule */}
+          <div className="hidden lg:block absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-accent/60 via-accent/20 to-transparent" />
+          <div className="hidden lg:block absolute -left-[34px] top-0 w-[3px] h-[3px] rounded-full bg-accent/80" />
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:pl-6">
             <div className="max-w-2xl">
-              <span className="text-[10px] uppercase font-black tracking-[0.25em] text-muted mb-4 block">
+              <span className="text-[10px] uppercase font-black tracking-[0.25em] text-muted mb-4 block fade-up">
                 Full-Stack &middot; Security &middot; Open Source
               </span>
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl serif-title font-medium leading-[0.9] tracking-tight">
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl serif-title font-medium leading-[0.9] tracking-tight fade-up">
                 zephex
               </h1>
-              <p className="text-xl lg:text-2xl mt-4 text-accent serif-title italic">
+              <p className="text-xl lg:text-2xl mt-4 text-accent serif-title italic fade-up">
                 someone who enjoys coding
+                <span className="inline-block w-[3px] h-[1em] bg-accent ml-1 align-middle animate-blink" />
               </p>
             </div>
 
-            <div className="hidden sm:flex items-center gap-4 shrink-0">
+            <div className="hidden sm:flex items-center gap-4 shrink-0 fade-up">
               <div className="w-16 h-16 rounded-full border-2 border-accent/30 flex items-center justify-center text-2xl font-black serif-title text-accent">
                 Z
               </div>
@@ -120,11 +95,17 @@ const TabsSection = () => {
               </div>
             </div>
           </div>
+
+          {/* Bottom decorative double-line */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <div className="h-px bg-gradient-to-r from-accent/40 via-accent/10 to-transparent" />
+            <div className="h-px bg-foreground/10 mt-[3px]" />
+          </div>
         </header>
 
         {/* Pill Tab Navigation */}
         <nav className="flex flex-wrap justify-center gap-2 mb-12 lg:mb-16">
-          {tabs.map((tab) => (
+          {tabs.map((tab, i) => (
             <button
               key={tab.id}
               onClick={() => handleTabSwitch(tab.id)}
@@ -133,54 +114,59 @@ const TabsSection = () => {
                   ? "bg-foreground text-background"
                   : "text-muted hover:text-foreground border border-transparent hover:border-foreground/20"
               }`}
+              style={{ animationDelay: `${i * 0.06}s` }}
             >
               {tab.label}
             </button>
           ))}
         </nav>
 
-        {/* Tab Content with Transitions */}
-        <div className="relative">
-          {tabs.map((tab) => renderTabContent(tab))}
+        {/* Tab Content */}
+        <div className="relative min-h-[50vh]">
+          <div key={activeTab} className="animate-fade-in">
+            {renderContent(activeTab)}
+          </div>
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 md:mt-32 pt-12 md:pt-16 border-t border-foreground/20 flex flex-col md:flex-row justify-between items-start gap-8">
-          <div className="max-w-xs">
-            <h4 className="text-xl serif-title font-bold mb-4">
-              Let&apos;s talk shop.
-            </h4>
-            <p className="text-muted text-sm">
-              Open for collaborative projects and research opportunities in Web
-              & Security.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] uppercase font-black text-muted tracking-[0.2em]">
-              Contact
-            </span>
-            <Link
-              href="mailto:hi@zephex.in"
-              className="text-xl md:text-2xl break-all serif-title italic hover:text-accent transition-colors"
-            >
-              hi@zephex.in
-            </Link>
-          </div>
-          <div className="flex gap-8">
-            <Link
-              href="https://github.com/real-zephex"
-              target="_blank"
-              className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all"
-            >
-              GitHub
-            </Link>
-            <Link
-              href="https://www.linkedin.com/in/zephex/"
-              target="_blank"
-              className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all"
-            >
-              LinkedIn
-            </Link>
+        <footer className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-foreground/10">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+            <div className="max-w-xs">
+              <h4 className="text-xl serif-title font-bold mb-4">
+                Let&apos;s talk shop.
+              </h4>
+              <p className="text-muted text-sm">
+                Open for collaborative projects and research opportunities in Web
+                & Security.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="text-[10px] uppercase font-black text-muted tracking-[0.2em]">
+                Contact
+              </span>
+              <Link
+                href="mailto:hi@zephex.in"
+                className="text-xl md:text-2xl break-all serif-title italic hover:text-accent transition-colors"
+              >
+                hi@zephex.in
+              </Link>
+            </div>
+            <div className="flex gap-8">
+              <Link
+                href="https://github.com/real-zephex"
+                target="_blank"
+                className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all"
+              >
+                GitHub
+              </Link>
+              <Link
+                href="https://www.linkedin.com/in/zephex/"
+                target="_blank"
+                className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all"
+              >
+                LinkedIn
+              </Link>
+            </div>
           </div>
         </footer>
       </div>
@@ -229,7 +215,7 @@ const InfoContent = () => {
             {languages.map((item, index) => (
               <span
                 key={index}
-                className="px-4 py-2 border border-foreground/10 editorial-card text-sm font-bold flex items-center gap-2"
+                className="px-4 py-2 border border-foreground/10 border-l-2 border-l-accent/50 editorial-card text-sm font-bold flex items-center gap-2"
               >
                 {item.icon} {item.name}
               </span>
@@ -242,7 +228,7 @@ const InfoContent = () => {
             {miscellaneous.map((item, index) => (
               <span
                 key={index}
-                className="px-4 py-2 border border-foreground/10 editorial-card text-sm font-bold flex items-center gap-2"
+                className="px-4 py-2 border border-foreground/10 border-l-2 border-l-accent/50 editorial-card text-sm font-bold flex items-center gap-2"
               >
                 {item.icon} {item.name}
               </span>
@@ -255,7 +241,7 @@ const InfoContent = () => {
             {tools.map((item, index) => (
               <span
                 key={index}
-                className="px-4 py-2 border border-foreground/10 editorial-card text-sm font-bold flex items-center gap-2"
+                className="px-4 py-2 border border-foreground/10 border-l-2 border-l-accent/50 editorial-card text-sm font-bold flex items-center gap-2"
               >
                 {item.icon} {item.name}
               </span>
@@ -263,64 +249,6 @@ const InfoContent = () => {
           </div>
         </div>
       </div>
-
-      {/* Featured Projects */}
-      <section className="pt-8 border-t border-muted/20">
-        <h2 className="section-label mb-8">Featured Projects</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <div
-              key={project.title}
-              className="editorial-card p-6 group fade-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-4xl font-black text-foreground/10 group-hover:text-accent/20 transition-colors">
-                  0{project.order}
-                </span>
-                <div className="flex gap-2 flex-wrap justify-end">
-                  {project.tags.map((tag, tIndex) => (
-                    <span
-                      key={tIndex}
-                      className={`text-[10px] uppercase font-bold tracking-tighter border px-2 py-0.5 ${
-                        tag === "Paid Project"
-                          ? "border-lime-300/40 text-lime-300"
-                          : "border-foreground/20"
-                      }`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <h3 className="text-2xl serif-title font-bold mb-3">
-                {project.title}
-              </h3>
-              <p className="text-muted text-sm leading-relaxed mb-6">
-                {project.description}
-              </p>
-              <div className="flex items-center gap-4">
-                {project.preview && (
-                  <Link
-                    href={project.preview}
-                    target="_blank"
-                    className="text-sm font-black uppercase tracking-widest border-b-2 border-accent hover:border-foreground transition-all"
-                  >
-                    Live Preview
-                  </Link>
-                )}
-                <Link
-                  href={project.link}
-                  target="_blank"
-                  className="text-sm font-black uppercase tracking-widest border-b-2 border-foreground/30 hover:border-foreground transition-all"
-                >
-                  Source ↗
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 };
@@ -359,13 +287,24 @@ const AppsContent = () => {
             <p className="text-muted text-sm leading-relaxed mb-8">
               {app.description}
             </p>
-            <Link
-              href={app.url}
-              target="_blank"
-              className="text-sm font-black uppercase tracking-widest border-b-2 border-accent hover:border-foreground transition-all"
-            >
-              Visit Platform ↗
-            </Link>
+            <div className="flex items-center gap-4">
+              <Link
+                href={app.url}
+                target="_blank"
+                className="text-sm font-black uppercase tracking-widest border-b-2 border-accent hover:border-foreground transition-all"
+              >
+                Visit Platform ↗
+              </Link>
+              {app.demo && (
+                <Link
+                  href={app.demo}
+                  target="_blank"
+                  className="text-sm font-bold uppercase tracking-widest text-muted hover:text-foreground transition-colors"
+                >
+                  Demo ↗
+                </Link>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -400,7 +339,7 @@ const ReposContent = () => {
 const QualificationsContent = () => {
   return (
     <div className="space-y-12">
-      <div className="border-l-4 border-foreground pl-8 py-4">
+      <div className="border-l-4 border-foreground/20 pl-8 py-4">
         <span className="text-xs uppercase font-black text-muted">
           Academic Path
         </span>

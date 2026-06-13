@@ -40,6 +40,7 @@ export interface Subdomain {
   url: string;
   description: string;
   order: number;
+  demo?: string;
 }
 
 export interface TabConfig {
@@ -166,6 +167,13 @@ export const subdomains: Subdomain[] = [
     url: "https://weather.zephex.in",
     description: "High-performance dashboard fetching weather for 101 cities in under 2 seconds (avg 1.31s), showcasing the power of concurrency.",
     order: 4,
+  },
+  {
+    name: "Good Proxy",
+    url: "https://goodproxy.goodproxy.workers.dev",
+    description: "A CORS proxy that bypasses CORS errors by adding necessary headers to requests. Capable of identifying disguised files and handling VTT and HLS streams.",
+    order: 5,
+    demo: "/cors-demo.html",
   },
 ];
 
