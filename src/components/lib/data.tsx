@@ -161,6 +161,12 @@ export const subdomains: Subdomain[] = [
     description: "Dedicated manga platform for a high-performance reading experience.",
     order: 3,
   },
+  {
+    name: "Weather Dash",
+    url: "https://weather.zephex.in",
+    description: "High-performance dashboard fetching weather for 101 cities in under 2 seconds (avg 1.31s), showcasing the power of concurrency.",
+    order: 4,
+  },
 ];
 
 export const tabs: TabConfig[] = [
