@@ -41,6 +41,7 @@ export interface Subdomain {
   description: string;
   order: number;
   demo?: string;
+  github?: string;
 }
 
 export interface TabConfig {
@@ -173,6 +174,13 @@ export const subdomains: Subdomain[] = [
     description: "A CORS proxy that bypasses CORS errors by adding necessary headers to requests. Capable of identifying disguised files and handling VTT and HLS streams.",
     order: 5,
     demo: "/cors-demo.html",
+  },
+  {
+    name: "Resume Forge",
+    url: "https://resumeforge.zephex.in",
+    description: "Professional resume builder — polished, ATS-friendly resumes for just ₹10.",
+    order: 6,
+    github: "https://github.com/zephex-immortal/resume-forge",
   },
 ];
 

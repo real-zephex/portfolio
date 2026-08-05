@@ -286,7 +286,7 @@ const AppsContent = () => {
             <p className="text-muted text-[15px] leading-relaxed mb-7 sans-body">
               {app.description}
             </p>
-            <div className="flex items-center gap-5 pt-4 border-t border-rule">
+            <div className="flex items-center gap-5 pt-4 border-t border-rule flex-wrap">
               <Link
                 href={app.url}
                 target="_blank"
@@ -301,6 +301,15 @@ const AppsContent = () => {
                   className="mono-label text-[11px] text-muted hover:text-foreground transition-colors"
                 >
                   Demo ↗
+                </Link>
+              )}
+              {app.github && (
+                <Link
+                  href={app.github}
+                  target="_blank"
+                  className="mono-label text-[11px] text-muted hover:text-accent transition-colors"
+                >
+                  Source ↗
                 </Link>
               )}
             </div>
