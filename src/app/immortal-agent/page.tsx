@@ -127,6 +127,63 @@ export default function ImmortalAgentPage() {
         </div>
       </section>
 
+      {/* Cost engineering */}
+      <section className="mt-14">
+        <div className="flex items-center gap-4 mb-8">
+          <span className="chapter-no italic text-2xl text-accent">III.</span>
+          <h2 className="serif-title text-3xl md:text-4xl font-semibold">Engineered for cost</h2>
+          <div className="rule-single flex-1" />
+        </div>
+
+        <div className="max-w-3xl">
+          <p className="text-lg leading-relaxed sans-body text-foreground/90">
+            Immortal Agent is built around{" "}
+            <em className="text-accent not-italic font-semibold">prompt caching</em>.
+            Everything — context, memory, tool state — lives in the database and
+            is replayed to the model every turn. The prompt prefix stays the
+            same, so the model&apos;s KV cache is hit again and again: you pay
+            only for the new tokens, and cache reads are discounted heavily by
+            every major provider. Most AI products charge you to re-think what
+            the model already knows; this one doesn&apos;t.
+          </p>
+
+          {/* Stat blocks */}
+          <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-px bg-rule border border-rule">
+            <div className="bg-paper p-6">
+              <p className="serif-title text-4xl md:text-5xl font-semibold text-accent">30M</p>
+              <p className="mono-label text-[10px] text-muted mt-2">tokens processed<br />in the last 30 days</p>
+            </div>
+            <div className="bg-paper p-6">
+              <p className="serif-title text-4xl md:text-5xl font-semibold">$0.27</p>
+              <p className="mono-label text-[10px] text-muted mt-2">total cost for<br />that month</p>
+            </div>
+            <div className="bg-paper p-6">
+              <p className="serif-title text-4xl md:text-5xl font-semibold">98.8%</p>
+              <p className="mono-label text-[10px] text-muted mt-2">of today&apos;s 21M tokens<br />served from cache</p>
+            </div>
+            <div className="bg-paper p-6">
+              <p className="serif-title text-4xl md:text-5xl font-semibold">193K</p>
+              <p className="mono-label text-[10px] text-muted mt-2">new input tokens<br />today — the only ones billed at full rate</p>
+            </div>
+            <div className="bg-paper p-6">
+              <p className="serif-title text-4xl md:text-5xl font-semibold">151K</p>
+              <p className="mono-label text-[10px] text-muted mt-2">new output tokens<br />generated today</p>
+            </div>
+            <div className="bg-paper p-6">
+              <p className="serif-title text-4xl md:text-5xl font-semibold text-accent">20.8M</p>
+              <p className="mono-label text-[10px] text-muted mt-2">cached tokens today —<br />near-zero marginal cost</p>
+            </div>
+          </div>
+
+          <p className="mt-6 text-base text-muted sans-body leading-relaxed">
+            Today alone: 21&nbsp;million tokens through the agent, of which
+            20.8&nbsp;million came from the cache. The bill for all of it —
+            cents. That&apos;s the difference between an agent that talks and an
+            agent that thinks for pennies.
+          </p>
+        </div>
+      </section>
+
       {/* Colophon */}
       <footer className="mt-16 pt-10">
         <div className="rule-double w-full" />
