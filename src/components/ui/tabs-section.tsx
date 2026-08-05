@@ -5,6 +5,7 @@ import React, { JSX, useState, useCallback } from "react";
 
 import Toast from "../utils/toast";
 import GitHubRepoList from "../utils/github-repo-list";
+import ResumeGate from "../resume/resume-gate";
 import {
   languages,
   tools,
@@ -430,27 +431,13 @@ const ResumeContent = () => {
                 ready for print or PDF. Last updated August 2026.
               </p>
             </div>
-            <div className="flex flex-col gap-3 shrink-0">
-              <Link
-                href="/resume.pdf"
-                target="_blank"
-                className="btn-editorial text-center text-[11px]"
-              >
-                View PDF ↗
-              </Link>
-              <Link
-                href="/resume.pdf"
-                download="zephex-resume.pdf"
-                className="mono-label text-[11px] text-center text-muted hover:text-accent transition-colors border border-rule px-6 py-2 hover:border-accent"
-              >
-                Download
-              </Link>
-            </div>
+            <ResumeGate />
           </div>
           <div className="rule-single mt-8 mb-5" />
           <p className="mono-label text-[9px] text-muted leading-relaxed">
             Hiring? The résumé links to GitHub, LinkedIn, and this very site.
-            Letters of recommendation available on request.
+            Letters of recommendation available on request. (Spoiler: the
+            answer to the sum is always an integer.)
           </p>
         </article>
       </div>
