@@ -424,7 +424,7 @@ const ResumeContent = () => {
                 Curriculum Vitae
               </span>
               <h3 className="serif-title text-3xl md:text-4xl font-semibold italic mb-3">
-                zephex — Sumit Kumar
+                zephex
               </h3>
               <p className="text-muted text-[15px] leading-relaxed sans-body">
                 Full-stack developer &amp; cyber security enthusiast. One page,
