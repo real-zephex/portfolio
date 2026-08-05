@@ -1,8 +1,8 @@
 "use client";
 
 import { JSX } from "react";
-import { FaJava, FaPython, FaGitAlt, FaGithub, FaReact } from "react-icons/fa";
-import { SiTypescript, SiCplusplus, SiNextdotjs, SiBun, SiHono, SiTailwindcss, SiGo, SiCodeberg, SiVercel, SiNetlify } from "react-icons/si";
+import { FaGitAlt, FaGithub, FaReact } from "react-icons/fa";
+import { SiTypescript, SiCplusplus, SiNextdotjs, SiBun, SiHono, SiTailwindcss, SiGo, SiRust, SiCodeberg, SiVercel, SiNetlify } from "react-icons/si";
 
 export interface Skill {
   name: string;
@@ -50,10 +50,9 @@ export interface TabConfig {
 
 export const languages: Skill[] = [
   { name: "Go", icon: <SiGo className="text-cyan-500" />, variant: "info" },
-  { name: "Python", icon: <FaPython className="text-blue-400" />, variant: "info" },
+  { name: "Rust", icon: <SiRust className="text-orange-500" />, variant: "warning" },
   { name: "TypeScript", icon: <SiTypescript className="text-blue-500" />, variant: "secondary" },
   { name: "C++", icon: <SiCplusplus className="text-blue-600" />, variant: "primary" },
-  { name: "Java", icon: <FaJava className="text-red-400" />, variant: "accent" },
 ];
 
 export const tools: Skill[] = [
