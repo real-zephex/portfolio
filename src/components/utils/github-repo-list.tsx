@@ -26,6 +26,11 @@ const SORT_OPTIONS: { id: SortMode; label: string }[] = [
 
 const RECENT_THRESHOLD_DAYS = 14;
 
+// Featured repos get a stamp + link to a dedicated project page
+const FEATURED: Record<string, string> = {
+  immortal: "/immortal-agent",
+};
+
 const LANGUAGE_COLORS: Record<string, string> = {
   Go: "#00ADD8",
   TypeScript: "#3178C6",
@@ -175,6 +180,9 @@ const GitHubRepoList = () => {
                       <h3 className="serif-title text-xl font-semibold text-foreground group-hover:text-accent transition-colors truncate">
                         {repo.name}
                       </h3>
+                      {FEATURED[repo.name] && (
+                        <span className="rubber-stamp text-[8px] shrink-0">Featured</span>
+                      )}
                     </div>
                     <div className="flex items-center gap-2 shrink-0 mono-label text-[10px]">
                       {repo.stars > 0 && (
@@ -200,6 +208,27 @@ const GitHubRepoList = () => {
                       )}
                     </div>
                     <div className="flex items-center gap-3">
+                      {FEATURED[repo.name] && (
+                        <span
+                          role="link"
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            window.location.href = FEATURED[repo.name];
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              window.location.href = FEATURED[repo.name];
+                            }
+                          }}
+                          className="text-accent cursor-pointer hover:underline"
+                        >
+                          Details
+                        </span>
+                      )}
                       <span className={recent ? "text-accent/70" : ""}>
                         {formatRelativeTime(repo.updatedAt)}
                       </span>

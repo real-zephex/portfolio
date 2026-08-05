@@ -337,13 +337,21 @@ const ReposContent = () => {
       <header className="flex items-center gap-4 border-b border-rule pb-6">
         <span className="chapter-no italic text-2xl text-accent">IV.</span>
         <h2 className="serif-title text-3xl md:text-4xl font-semibold">The Repository Feed</h2>
-        <Link
-          href="https://github.com/real-zephex"
-          target="_blank"
-          className="ml-auto btn-editorial text-[10px]"
-        >
-          Profile ↗
-        </Link>
+        <div className="ml-auto flex items-center gap-4">
+          <Link
+            href="/immortal-agent"
+            className="mono-label text-[11px] text-accent link-underline hidden sm:inline"
+          >
+            Featured: Immortal Agent ↗
+          </Link>
+          <Link
+            href="https://github.com/real-zephex"
+            target="_blank"
+            className="btn-editorial text-[10px]"
+          >
+            Profile ↗
+          </Link>
+        </div>
       </header>
       <GitHubRepoList />
     </div>
