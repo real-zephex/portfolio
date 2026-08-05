@@ -41,7 +41,6 @@ const EXCLUDED_REPOS = [
   "gogo_to_aniwatch",
   "Concurrent-Sequential-API",
   "Concurrent-vs-Sequential-Frontend",
-  "mentor-mentee-attendance",
   "BasicNotes",
   "Downloads-Sorter",
 ];

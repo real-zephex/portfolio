@@ -29,6 +29,10 @@ const RECENT_THRESHOLD_DAYS = 14;
 // Featured repos get a stamp + link to a dedicated project page
 const FEATURED: Record<string, string> = {
   immortal: "/immortal-agent",
+  askcli: "/askcli",
+  dictate: "/dictate",
+  "Good-Proxy": "/good-proxy",
+  "mentor-mentee-attendance": "/educore-erp",
 };
 
 const LANGUAGE_COLORS: Record<string, string> = {
