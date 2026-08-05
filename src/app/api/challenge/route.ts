@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { after } from "next/server";
 import { signChallenge, signPdfToken, verifyChallenge } from "@/lib/resume-challenge";
+import { describeRequest, formatVisitor, sendTelegram } from "@/lib/telegram";
 
 const CHALLENGE_TTL = 2 * 60 * 1000; // 2 minutes to answer
 const PDF_TTL = 5 * 60 * 1000; // token valid for 5 minutes
@@ -32,6 +34,17 @@ export async function POST(req: Request) {
     }
 
     const pdfExp = Date.now() + PDF_TTL;
+
+    // A human just beat the math gate → tell Zephex about it.
+    after(async () => {
+      const info = await describeRequest(req);
+      const msg =
+        `📄 <b>RESUME CHALLENGE SOLVED</b>\n` +
+        `Someone beat the math gate and is viewing the resume.\n\n` +
+        formatVisitor(info);
+      await sendTelegram(msg);
+    });
+
     return NextResponse.json({ token: `${pdfExp}.${signPdfToken(pdfExp)}` });
   } catch {
     return NextResponse.json({ error: "Bad request." }, { status: 400 });

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { after } from "next/server";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { verifyPdfToken } from "@/lib/resume-challenge";
+import { describeRequest, formatVisitor, sendTelegram } from "@/lib/telegram";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +20,18 @@ export async function GET(req: Request) {
 
   const file = await readFile(path.join(process.cwd(), "private", "resume.pdf"));
   const download = url.searchParams.get("dl") === "1";
+
+  // They actually clicked download on the PDF → ping.
+  if (download) {
+    after(async () => {
+      const info = await describeRequest(req);
+      const msg =
+        `⬇️ <b>RESUME DOWNLOADED</b>\n` +
+        `Someone downloaded the resume PDF.\n\n` +
+        formatVisitor(info);
+      await sendTelegram(msg);
+    });
+  }
 
   return new NextResponse(file, {
     headers: {

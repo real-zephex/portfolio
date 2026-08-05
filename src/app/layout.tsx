@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { fraunces, newsreader, plexMono } from "@/fonts/fonts";
 import { Analytics } from "@vercel/analytics/next"
+import Telemetry from "@/components/Telemetry";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://zephex.in"),
@@ -62,6 +63,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable}`}>
       <Analytics />
+      <Telemetry />
       <body className="antialiased font-sans" data-theme="editorial">
         {children}
       </body>
