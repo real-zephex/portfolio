@@ -190,4 +190,5 @@ export const tabs: TabConfig[] = [
   { id: "repos", label: "Repos" },
   { id: "qualifications", label: "Education" },
   { id: "trainings", label: "Trainings" },
+  { id: "resume", label: "Résumé" },
 ];

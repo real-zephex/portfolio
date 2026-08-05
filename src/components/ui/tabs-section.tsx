@@ -53,6 +53,8 @@ const TabsSection = () => {
         return <QualificationsContent />;
       case "trainings":
         return <TrainingsContent />;
+      case "resume":
+        return <ResumeContent />;
       default:
         return null;
     }
@@ -395,6 +397,62 @@ const TrainingsContent = () => {
             </p>
           </article>
         ))}
+      </div>
+    </div>
+  );
+};
+
+/* ──────────────── Résumé ──────────────── */
+
+const ResumeContent = () => {
+  return (
+    <div className="space-y-12">
+      <header className="flex items-center gap-4 border-b border-rule pb-6">
+        <span className="chapter-no italic text-2xl text-accent">F.</span>
+        <h2 className="serif-title text-3xl md:text-4xl font-semibold">Résumé</h2>
+        <span className="ml-auto mono-label text-[10px] text-muted hidden sm:inline">
+          PDF &middot; One page
+        </span>
+      </header>
+
+      <div className="max-w-3xl">
+        <article className="editorial-card p-8 md:p-10">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div className="flex-1">
+              <span className="mono-label text-[10px] text-accent block mb-3">
+                Curriculum Vitae
+              </span>
+              <h3 className="serif-title text-3xl md:text-4xl font-semibold italic mb-3">
+                zephex — Sumit Kumar
+              </h3>
+              <p className="text-muted text-[15px] leading-relaxed sans-body">
+                Full-stack developer &amp; cyber security enthusiast. One page,
+                ready for print or PDF. Last updated August 2026.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 shrink-0">
+              <Link
+                href="/resume.pdf"
+                target="_blank"
+                className="btn-editorial text-center text-[11px]"
+              >
+                View PDF ↗
+              </Link>
+              <Link
+                href="/resume.pdf"
+                download="zephex-resume.pdf"
+                className="mono-label text-[11px] text-center text-muted hover:text-accent transition-colors border border-rule px-6 py-2 hover:border-accent"
+              >
+                Download
+              </Link>
+            </div>
+          </div>
+          <div className="rule-single mt-8 mb-5" />
+          <p className="mono-label text-[9px] text-muted leading-relaxed">
+            Hiring? The résumé links to GitHub, LinkedIn, and this very site.
+            Letters of recommendation available on request.
+          </p>
+        </article>
       </div>
     </div>
   );
