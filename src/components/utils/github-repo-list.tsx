@@ -73,9 +73,7 @@ const GitHubRepoList = () => {
   useEffect(() => {
     const fetchRepos = async () => {
       const res = await getAllRepos();
-      if (res.status) {
-        setRepos(res.data);
-      }
+      if (res.status) setRepos(res.data);
       setLoading(false);
     };
     fetchRepos();
@@ -109,7 +107,7 @@ const GitHubRepoList = () => {
       <div className="flex flex-col mt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[...Array(9)].map((_, i) => (
-            <div key={i} className="h-44 rounded-sm border border-foreground/10 animate-pulse bg-muted/5" />
+            <div key={i} className="h-44 rounded-sm border border-rule animate-pulse bg-muted/10" />
           ))}
         </div>
       </div>
@@ -118,19 +116,18 @@ const GitHubRepoList = () => {
 
   return (
     <div className="flex flex-col mt-4">
+      {/* Ledger controls */}
       <div className="flex flex-col gap-4 mb-8">
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] uppercase font-black tracking-[0.2em] text-muted mr-1">
-            Sort
-          </span>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span className="mono-label text-[10px] text-muted mr-1">Sort</span>
           {SORT_OPTIONS.map((opt) => (
             <button
               key={opt.id}
               onClick={() => setSortBy(opt.id)}
-              className={`px-3 py-1.5 text-xs font-bold uppercase tracking-[0.1em] rounded-full transition-all duration-200 ${
+              className={`mono-label text-[10px] transition-all duration-200 ${
                 sortBy === opt.id
-                  ? "bg-foreground text-background"
-                  : "text-muted border border-foreground/10 hover:border-foreground/30"
+                  ? "text-accent border-b-2 border-accent pb-0.5"
+                  : "text-muted hover:text-foreground"
               }`}
             >
               {opt.label}
@@ -145,14 +142,14 @@ const GitHubRepoList = () => {
             placeholder="Filter repos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent border border-foreground/10 rounded-full pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted/40 focus:outline-none focus:border-accent/50 transition-colors"
+            className="w-full bg-transparent border border-rule rounded-sm pl-9 pr-4 py-2 text-sm text-foreground placeholder:text-muted/40 focus:outline-none focus:border-accent/60 transition-colors"
           />
         </div>
       </div>
 
-      <div className="border-t border-foreground/10 pt-8">
+      <div className="border-t border-rule pt-8">
         {filtered.length === 0 ? (
-          <div className="py-16 text-center text-muted/60 text-sm">
+          <div className="py-16 text-center text-muted/60 text-sm sans-body">
             No repos match your filter.
           </div>
         ) : (
@@ -165,52 +162,45 @@ const GitHubRepoList = () => {
                   key={repo.name}
                   href={repo.url}
                   target="_blank"
-                  className="group relative flex flex-col p-6 border border-foreground/10 bg-foreground/[0.02] transition-all duration-300 animate-fade-in hover:border-accent/40 hover:-translate-y-0.5"
+                  className="group relative flex flex-col p-6 editorial-card animate-fade-in"
                   style={{ animationDelay: `${i * 0.03}s` }}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-accent/0 group-hover:bg-accent/60 transition-colors duration-300" />
+                  <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-accent/0 group-hover:bg-accent/70 transition-colors duration-300" />
 
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-2 min-w-0">
                       {recent && (
-                        <span className="w-2 h-2 rounded-full bg-green-400 shrink-0 mt-1 animate-pulse" />
+                        <span className="w-2 h-2 rounded-full bg-accent shrink-0 mt-1 animate-pulse" />
                       )}
-                      <h3 className="text-lg serif-title font-bold text-foreground group-hover:text-accent transition-colors truncate">
+                      <h3 className="serif-title text-xl font-semibold text-foreground group-hover:text-accent transition-colors truncate">
                         {repo.name}
                       </h3>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-2 shrink-0 mono-label text-[10px]">
                       {repo.stars > 0 && (
-                        <span className="text-xs font-bold text-accent/80 whitespace-nowrap">
-                          ★ {repo.stars}
-                        </span>
+                        <span className="text-accent/80 whitespace-nowrap">★ {repo.stars}</span>
                       )}
                       {repo.forks > 0 && (
-                        <span className="text-xs font-bold text-muted/50 whitespace-nowrap">
-                          ⑂ {repo.forks}
-                        </span>
+                        <span className="text-muted/50 whitespace-nowrap">⑂ {repo.forks}</span>
                       )}
                     </div>
                   </div>
 
-                  <p className="text-muted text-sm leading-relaxed line-clamp-3 sans-body flex-1 mb-5">
+                  <p className="text-muted text-[15px] leading-relaxed line-clamp-3 sans-body flex-1 mb-5">
                     {repo.description || "No description provided."}
                   </p>
 
-                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted/50">
+                  <div className="flex items-center justify-between text-[10px] mono-label text-muted/60 border-t border-rule pt-3">
                     <div className="flex items-center gap-2">
                       {repo.language && (
                         <div className="flex items-center gap-1.5">
-                          <span
-                            className="w-2 h-2 rounded-full shrink-0"
-                            style={{ backgroundColor: langColor }}
-                          />
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: langColor }} />
                           <span>{repo.language}</span>
                         </div>
                       )}
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className={`${recent ? "text-green-400/70" : ""}`}>
+                      <span className={recent ? "text-accent/70" : ""}>
                         {formatRelativeTime(repo.updatedAt)}
                       </span>
                       <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-1 group-hover:translate-x-0">

@@ -25,13 +25,9 @@ const TabsSection = () => {
       const toast = Toast(message);
       setElement(toast);
 
-      if (toastTimeout) {
-        clearTimeout(toastTimeout);
-      }
+      if (toastTimeout) clearTimeout(toastTimeout);
 
-      const timeout = setTimeout(() => {
-        setElement(<></>);
-      }, 2000);
+      const timeout = setTimeout(() => setElement(<></>), 2200);
       setToastTimeout(timeout);
     },
     [toastTimeout]
@@ -48,7 +44,7 @@ const TabsSection = () => {
   const renderContent = (tabId: string) => {
     switch (tabId) {
       case "info":
-        return <InfoContent />;
+        return <InfoContent onCopy={handleToast} />;
       case "apps":
         return <AppsContent />;
       case "repos":
@@ -62,111 +58,108 @@ const TabsSection = () => {
     }
   };
 
-  return (
-    <main className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-6 pb-20">
-      <div className="flex flex-col w-full mt-16 md:mt-32">
-        {/* Hero */}
-        <header className="relative mb-16 lg:mb-20 pb-12 lg:pb-16">
-          {/* Vertical decorative rule */}
-          <div className="hidden lg:block absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-accent/60 via-accent/20 to-transparent" />
-          <div className="hidden lg:block absolute -left-[34px] top-0 w-[3px] h-[3px] rounded-full bg-accent/80" />
+  const activeIndex = tabs.findIndex((t) => t.id === activeTab) + 1;
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:pl-6">
+  return (
+    <main className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-10 pb-24">
+      <div className="flex flex-col w-full mt-10 md:mt-16">
+        {/* ─── Masthead ─────────────────────────────────────────────── */}
+        <header className="relative mb-14">
+          {/* top folio strip */}
+          <div className="flex items-center justify-between mono-label text-[10px] text-muted mb-3">
+            <span>Portfolio &middot; Vol. IV</span>
+            <span className="hidden sm:inline">Rupnagar, Punjab — India</span>
+            <span>No. {String(activeIndex).padStart(2, "0")}</span>
+          </div>
+
+          <div className="rule-double w-full" />
+
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 lg:pl-0 py-8">
             <div className="max-w-2xl">
-              <span className="text-[10px] uppercase font-black tracking-[0.25em] text-muted mb-4 block fade-up">
-                Full-Stack &middot; Security &middot; Open Source
-              </span>
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl serif-title font-medium leading-[0.9] tracking-tight fade-up">
+              <h1 className="serif-title text-6xl sm:text-8xl lg:text-9xl font-semibold leading-[0.85] tracking-tight fade-up">
                 zephex
               </h1>
-              <p className="text-xl lg:text-2xl mt-4 text-accent serif-title italic fade-up">
-                someone who enjoys coding
-                <span className="inline-block w-[3px] h-[1em] bg-accent ml-1 align-middle animate-blink" />
+              <p className="serif-title text-xl sm:text-2xl mt-5 text-accent italic fade-up" style={{ animationDelay: "0.1s" }}>
+                a journal of things built in code
+                <span className="inline-block w-[3px] h-[1em] bg-accent ml-2 align-middle animate-blink" />
               </p>
             </div>
 
-            <div className="hidden sm:flex items-center gap-4 shrink-0 fade-up">
-              <div className="w-16 h-16 rounded-full border-2 border-accent/30 flex items-center justify-center text-2xl font-black serif-title text-accent">
-                Z
-              </div>
-              <div className="text-[10px] uppercase font-black tracking-[0.15em] text-muted leading-relaxed">
-                <span className="block">real-zephex</span>
-                <span className="block text-accent">github</span>
+            <div className="hidden sm:flex flex-col items-end gap-1 fade-up" style={{ animationDelay: "0.15s" }}>
+              <span className="mono-label text-[10px] text-muted">B.Tech — Cyber Security</span>
+              <span className="serif-title text-lg italic">full-stack &amp; security</span>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="rubber-stamp text-[10px]">Open to work</span>
               </div>
             </div>
           </div>
 
-          {/* Bottom decorative double-line */}
-          <div className="absolute bottom-0 left-0 right-0">
-            <div className="h-px bg-gradient-to-r from-accent/40 via-accent/10 to-transparent" />
-            <div className="h-px bg-foreground/10 mt-[3px]" />
-          </div>
+          <div className="rule-double w-full" />
         </header>
 
-        {/* Pill Tab Navigation */}
-        <nav className="flex flex-wrap justify-center gap-2 mb-12 lg:mb-16">
+        {/* ─── Chapter navigation ───────────────────────────────────── */}
+        <nav className="flex flex-wrap justify-center gap-x-8 gap-y-3 mb-14">
           {tabs.map((tab, i) => (
             <button
               key={tab.id}
               onClick={() => handleTabSwitch(tab.id)}
-              className={`relative px-5 py-2.5 text-sm font-bold uppercase tracking-[0.12em] transition-all duration-300 rounded-full ${
-                activeTab === tab.id
-                  ? "bg-foreground text-background"
-                  : "text-muted hover:text-foreground border border-transparent hover:border-foreground/20"
+              className={`group relative flex items-baseline gap-2 px-1 py-2 mono-label text-xs transition-colors duration-300 ${
+                activeTab === tab.id ? "text-accent" : "text-muted hover:text-foreground"
               }`}
-              style={{ animationDelay: `${i * 0.06}s` }}
             >
+              <span className="chapter-no italic text-base">{String.fromCharCode(65 + i)}.</span>
               {tab.label}
+              <span
+                className={`absolute left-0 -bottom-0.5 h-[2px] bg-accent transition-all duration-300 ${
+                  activeTab === tab.id ? "w-full" : "w-0 group-hover:w-full"
+                }`}
+              />
             </button>
           ))}
         </nav>
 
-        {/* Tab Content */}
+        {/* ─── Tab content ──────────────────────────────────────────── */}
         <div className="relative min-h-[50vh]">
           <div key={activeTab} className="animate-fade-in">
             {renderContent(activeTab)}
           </div>
         </div>
 
-        {/* Footer */}
-        <footer className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-foreground/10">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+        {/* ─── Colophon / footer ────────────────────────────────────── */}
+        <footer className="mt-16 pt-10">
+          <div className="rule-double w-full" />
+          <div className="flex flex-col md:flex-row justify-between items-start gap-10 py-8">
             <div className="max-w-xs">
-              <h4 className="text-xl serif-title font-bold mb-4">
+              <h4 className="serif-title text-2xl font-semibold mb-3">
                 Let&apos;s talk shop.
               </h4>
-              <p className="text-muted text-sm">
-                Open for collaborative projects and research opportunities in Web
-                & Security.
+              <p className="text-muted text-base leading-relaxed sans-body">
+                Open for collaborative projects, freelance work, and research
+                opportunities in Web &amp; Security.
               </p>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="text-[10px] uppercase font-black text-muted tracking-[0.2em]">
-                Contact
-              </span>
+              <span className="mono-label text-[10px] text-muted">Correspondence</span>
               <Link
                 href="mailto:hi@zephex.in"
-                className="text-xl md:text-2xl break-all serif-title italic hover:text-accent transition-colors"
+                className="serif-title text-2xl md:text-3xl italic link-underline hover:text-accent transition-colors"
               >
                 hi@zephex.in
               </Link>
             </div>
-            <div className="flex gap-8">
-              <Link
-                href="https://github.com/real-zephex"
-                target="_blank"
-                className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all"
-              >
-                GitHub
+            <div className="flex flex-col gap-3">
+              <span className="mono-label text-[10px] text-muted">Elsewhere</span>
+              <Link href="https://github.com/real-zephex" target="_blank" className="link-underline mono-label text-xs">
+                GitHub ↗
               </Link>
-              <Link
-                href="https://www.linkedin.com/in/zephex/"
-                target="_blank"
-                className="font-black uppercase text-xs border-b-2 border-foreground hover:border-accent pb-1 transition-all"
-              >
-                LinkedIn
+              <Link href="https://www.linkedin.com/in/zephex/" target="_blank" className="link-underline mono-label text-xs">
+                LinkedIn ↗
               </Link>
             </div>
+          </div>
+          <div className="border-t border-rule py-4 flex flex-col sm:flex-row justify-between gap-2 mono-label text-[10px] text-muted">
+            <span>Set in Fraunces &amp; Newsreader &middot; Printed on recycled electrons</span>
+            <span>&copy; {new Date().getFullYear()} zephex</span>
           </div>
         </footer>
       </div>
@@ -175,156 +168,161 @@ const TabsSection = () => {
   );
 };
 
-/* ──────────────── Info Content ──────────────── */
+/* ──────────────── I. About ──────────────── */
 
-const InfoContent = () => {
+const InfoContent = ({ onCopy }: { onCopy: (m: string) => void }) => {
   return (
     <div className="space-y-16">
-      {/* About Me */}
+      {/* About — magazine spread */}
       <section>
-        <h2 className="text-4xl serif-title mb-8 border-l-8 border-accent pl-6">
-          About Me
-        </h2>
-        <div className="prose prose-xl max-w-none text-foreground/90 leading-relaxed">
-          <p className="serif-title text-2xl italic leading-relaxed">
-            Hey, I&apos;m{" "}
-            <span className="font-bold underline decoration-accent decoration-4">
-              zephex
-            </span>
-            . I&apos;m a second-year B.Tech student studying Computer Science
-            and Cyber Security.
-          </p>
-          <p className="mt-6 text-lg sans-body">
-            I like to build things for the web that are fast, secure, and
-            well-designed. I spend most of my time working on{" "}
-            <span className="text-accent font-semibold px-1">
-              full-stack web development
-            </span>
-            , building CLI tools, tinkering with Linux servers, and
-            occasionally playing Minecraft. This site is a collection of my
-            recent projects and experiments.
-          </p>
+        <div className="flex items-center gap-4 mb-8">
+          <span className="chapter-no italic text-2xl text-accent">I.</span>
+          <h2 className="serif-title text-4xl md:text-5xl font-semibold">About Me</h2>
+          <div className="rule-single flex-1" />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-8">
+            <p className="drop-cap serif-title text-2xl md:text-3xl italic leading-snug">
+              Hey, I&apos;m{" "}
+              <span className="font-semibold not-italic underline decoration-accent decoration-4 underline-offset-4">
+                zephex
+              </span>
+              . A B.Tech student studying Computer Science and Cyber Security,
+              building things for the web that are fast, secure, and well-designed.
+            </p>
+            <p className="mt-6 text-lg leading-relaxed sans-body text-foreground/90">
+              I spend most of my time on full-stack web development, CLI tools,
+              Linux servers, and the occasional Minecraft session. This site is a
+              living archive of recent projects and experiments — a desk drawer of
+              things I&apos;ve made and learned.
+            </p>
+          </div>
+          <div className="lg:col-span-4">
+            <aside className="editorial-card p-6">
+              <span className="mono-label text-[10px] text-accent mb-4 block">Pull quote</span>
+              <p className="serif-title text-xl italic leading-snug">
+                “Good software is quiet. It does its job and gets out of the way.”
+              </p>
+              <div className="rule-single mt-5 mb-3" />
+              <p className="mono-label text-[10px] text-muted">— zephex, on design</p>
+            </aside>
+          </div>
         </div>
       </section>
 
-      {/* Skills */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-muted/20">
-        <div>
-          <h3 className="section-label">Languages</h3>
-          <div className="flex flex-wrap gap-3">
-            {languages.map((item, index) => (
-              <span
-                key={index}
-                className="px-4 py-2 border border-foreground/10 border-l-2 border-l-accent/50 editorial-card text-sm font-bold flex items-center gap-2"
-              >
-                {item.icon} {item.name}
-              </span>
-            ))}
-          </div>
+      {/* Skills — index / table of contents */}
+      <section className="pt-4">
+        <div className="flex items-center gap-4 mb-8">
+          <span className="chapter-no italic text-2xl text-accent">II.</span>
+          <h2 className="serif-title text-4xl md:text-5xl font-semibold">The Toolkit</h2>
+          <div className="rule-single flex-1" />
         </div>
-        <div>
-          <h3 className="section-label">Frameworks</h3>
-          <div className="flex flex-wrap gap-3">
-            {miscellaneous.map((item, index) => (
-              <span
-                key={index}
-                className="px-4 py-2 border border-foreground/10 border-l-2 border-l-accent/50 editorial-card text-sm font-bold flex items-center gap-2"
-              >
-                {item.icon} {item.name}
-              </span>
-            ))}
-          </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {[
+            { label: "Languages", items: languages },
+            { label: "Frameworks", items: miscellaneous },
+            { label: "Workflow", items: tools },
+          ].map((col) => (
+            <div key={col.label}>
+              <h3 className="mono-label text-[10px] text-muted mb-4 pb-2 border-b border-rule">
+                {col.label}
+              </h3>
+              <div className="flex flex-col">
+                {col.items.map((item, i) => (
+                  <div key={i} className="group flex items-center py-1.5">
+                    <span className="flex items-center gap-2.5 text-[15px] font-medium text-foreground/90">
+                      <span className="text-accent/70">{item.icon}</span>
+                      {item.name}
+                    </span>
+                    <span className="dotted-leader" />
+                    <span className="mono-label text-[9px] text-muted opacity-0 group-hover:opacity-100 transition-opacity">
+                      {item.variant}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-        <div>
-          <h3 className="section-label">Workflow</h3>
-          <div className="flex flex-wrap gap-3">
-            {tools.map((item, index) => (
-              <span
-                key={index}
-                className="px-4 py-2 border border-foreground/10 border-l-2 border-l-accent/50 editorial-card text-sm font-bold flex items-center gap-2"
-              >
-                {item.icon} {item.name}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 };
 
-/* ──────────────── Apps Content ──────────────── */
+/* ──────────────── III. Apps ──────────────── */
 
 const AppsContent = () => {
   return (
     <div className="space-y-12">
-      <header className="flex justify-between items-center border-b border-foreground/10 pb-6">
-        <h2 className="text-2xl md:text-3xl serif-title">Live Subdomains</h2>
-        <span className="text-[10px] uppercase font-black tracking-widest text-muted">
+      <header className="flex items-center gap-4 border-b border-rule pb-6">
+        <span className="chapter-no italic text-2xl text-accent">III.</span>
+        <h2 className="serif-title text-3xl md:text-4xl font-semibold">Live Subdomains</h2>
+        <span className="ml-auto mono-label text-[10px] text-muted hidden sm:inline">
           Hosted on zephex.in
         </span>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {subdomains.map((app, index) => (
-          <div
+          <article
             key={app.name}
-            className="editorial-card p-8 group fade-up"
-            style={{ animationDelay: `${index * 0.1}s` }}
+            className="editorial-card p-7 group fade-up"
+            style={{ animationDelay: `${index * 0.08}s` }}
           >
             <div className="flex justify-between items-start mb-6">
-              <span className="text-4xl font-black text-foreground/10 group-hover:text-accent/20 transition-colors">
-                0{app.order}
+              <span className="serif-title italic text-5xl font-semibold text-rule-strong/40 group-hover:text-accent/40 transition-colors">
+                {String(app.order).padStart(2, "0")}
               </span>
-              <div className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center text-[10px] font-black text-muted">
-                LIVE
-              </div>
+              <span className="rubber-stamp text-[9px]">Live</span>
             </div>
-            <h3 className="text-xl serif-title font-bold mb-2">{app.name}</h3>
-            <p className="text-accent text-xs font-bold mb-4 tracking-tight">
+            <h3 className="serif-title text-2xl font-semibold mb-1.5 group-hover:text-accent transition-colors">
+              {app.name}
+            </h3>
+            <p className="mono-label text-[10px] text-accent mb-4 truncate">
               {app.url.replace("https://", "")}
             </p>
-            <p className="text-muted text-sm leading-relaxed mb-8">
+            <p className="text-muted text-[15px] leading-relaxed mb-7 sans-body">
               {app.description}
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5 pt-4 border-t border-rule">
               <Link
                 href={app.url}
                 target="_blank"
-                className="text-sm font-black uppercase tracking-widest border-b-2 border-accent hover:border-foreground transition-all"
+                className="mono-label text-[11px] link-underline text-foreground"
               >
-                Visit Platform ↗
+                Visit platform ↗
               </Link>
               {app.demo && (
                 <Link
                   href={app.demo}
                   target="_blank"
-                  className="text-sm font-bold uppercase tracking-widest text-muted hover:text-foreground transition-colors"
+                  className="mono-label text-[11px] text-muted hover:text-foreground transition-colors"
                 >
                   Demo ↗
                 </Link>
               )}
             </div>
-          </div>
+          </article>
         ))}
       </div>
     </div>
   );
 };
 
-/* ──────────────── Repos Content ──────────────── */
+/* ──────────────── IV. Repos ──────────────── */
 
 const ReposContent = () => {
   return (
     <div className="space-y-8">
-      <header className="flex justify-between items-center border-b border-foreground/10 pb-6">
-        <h2 className="text-2xl md:text-3xl serif-title">
-          The Repository Feed
-        </h2>
+      <header className="flex items-center gap-4 border-b border-rule pb-6">
+        <span className="chapter-no italic text-2xl text-accent">IV.</span>
+        <h2 className="serif-title text-3xl md:text-4xl font-semibold">The Repository Feed</h2>
         <Link
           href="https://github.com/real-zephex"
           target="_blank"
-          className="btn-editorial text-xs"
+          className="ml-auto btn-editorial text-[10px]"
         >
           Profile ↗
         </Link>
@@ -334,47 +332,59 @@ const ReposContent = () => {
   );
 };
 
-/* ──────────────── Education Content ──────────────── */
+/* ──────────────── V. Education ──────────────── */
 
 const QualificationsContent = () => {
   return (
     <div className="space-y-12">
-      <div className="border-l-4 border-foreground/20 pl-8 py-4">
-        <span className="text-xs uppercase font-black text-muted">
-          Academic Path
-        </span>
-        <div className="mt-8 space-y-16">
-          {qualifications.map((q, i) => (
-            <div key={i}>
-              <h3 className="text-2xl md:text-3xl serif-title font-bold italic">
-                {q.institution}
-              </h3>
-              <p className="text-accent font-bold mt-1">{q.period}</p>
-              <p className="mt-4 text-base md:text-lg">{q.description}</p>
-            </div>
-          ))}
-        </div>
+      <header className="flex items-center gap-4 border-b border-rule pb-6">
+        <span className="chapter-no italic text-2xl text-accent">V.</span>
+        <h2 className="serif-title text-3xl md:text-4xl font-semibold">Academic Path</h2>
+      </header>
+
+      <div className="border-l-2 border-rule pl-8 md:pl-12 flex flex-col gap-14">
+        {qualifications.map((q, i) => (
+          <div key={i} className="relative">
+            {/* chapter marker */}
+            <span className="absolute -left-[45px] md:-left-[57px] top-2 size-3 rounded-full bg-accent ring-4 ring-background" />
+            <span className="mono-label text-[10px] text-accent">{q.period}</span>
+            <h3 className="serif-title text-3xl md:text-4xl font-semibold italic mt-1">
+              {q.institution}
+            </h3>
+            <p className="mt-3 text-lg text-foreground/85 sans-body leading-relaxed">
+              {q.description}
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-/* ──────────────── Trainings Content ──────────────── */
+/* ──────────────── Trainings ──────────────── */
 
 const TrainingsContent = () => {
   return (
     <div className="space-y-12">
+      <header className="flex items-center gap-4 border-b border-rule pb-6">
+        <span className="chapter-no italic text-2xl text-accent">VI.</span>
+        <h2 className="serif-title text-3xl md:text-4xl font-semibold">Trainings</h2>
+      </header>
+
       <div className="max-w-3xl">
         {trainings.map((t, i) => (
-          <div key={i} className="bg-foreground text-background p-6 md:p-8">
-            <h3 className="text-2xl md:text-3xl serif-title italic mb-4">
+          <article key={i} className="relative bg-foreground text-background p-8 md:p-10">
+            <span className="absolute top-0 left-0 w-16 h-1 bg-accent" />
+            <span className="mono-label text-[10px] opacity-60">
+              {t.organization} &middot; {t.duration}
+            </span>
+            <h3 className="serif-title text-3xl md:text-4xl italic font-semibold mt-3 mb-5">
               {t.title}
             </h3>
-            <p className="text-xs md:text-sm opacity-80 uppercase tracking-widest">
-              {t.organization} &middot; {t.duration}
+            <p className="text-lg leading-relaxed sans-body opacity-90">
+              {t.description}
             </p>
-            <p className="mt-6">{t.description}</p>
-          </div>
+          </article>
         ))}
       </div>
     </div>

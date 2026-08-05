@@ -2,30 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Warm editorial palette ─────────────────────────────────────────── */
 :root {
-    --background: #1a1816;
-    --foreground: #f5f2ed;
-    --accent: #b48c5b;
-    --muted: #78716c;
-    --paper: #2c2a27;
-    --ink: #f5f2ed;
-    --dot-color: #44403c;
-    --dot-bg: #1a1816;
-    --grain-opacity: 0.035;
+    --background: #f5efe3;      /* warm cream paper */
+    --foreground: #241e17;      /* warm near-black ink */
+    --accent: #b8492c;          /* terracotta rust */
+    --accent-deep: #93341d;     /* deeper rust for hover */
+    --accent-soft: #f0d9c3;     /* pale apricot wash */
+    --muted: #7c6f5f;           /* warm taupe */
+    --paper: #fbf7ee;           /* raised card */
+    --rule: #d8cab4;            /* hairline rules */
+    --rule-strong: #241e17;     /* strong rules */
+    --grain-opacity: 0.055;
 }
 
 body {
     color: var(--foreground);
     background: var(--background);
-    background-image:
-        radial-gradient(var(--dot-color) 0.5px, transparent 0.5px),
-        radial-gradient(var(--dot-color) 0.5px, var(--dot-bg) 0.5px);
-    background-size: 40px 40px;
-    background-position: 0 0, 20px 20px;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    font-feature-settings: "ss01", "ss02", "cv01";
     transition: color 0.3s ease, background-color 0.3s ease;
-    font-family: inherit;
+    font-family: var(--font-newsreader), Georgia, serif;
     overflow-x: hidden;
+}
+
+/* Layered paper: soft top light + faint vignette + grain */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(120% 80% at 50% 0%, rgba(255, 252, 244, 0.9) 0%, transparent 60%),
+        radial-gradient(90% 60% at 50% 110%, rgba(184, 73, 44, 0.05) 0%, transparent 55%);
 }
 
 body::after {
@@ -40,91 +49,153 @@ body::after {
     background-size: 256px 256px;
 }
 
+/* ─── Editorial primitives ───────────────────────────────────────────── */
+
+.serif-title {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-variation-settings: "SOFT" 60, "WONK" 1;
+    letter-spacing: -0.015em;
+}
+
+.sans-body {
+    font-family: var(--font-newsreader), Georgia, serif;
+}
+
+.mono-label {
+    font-family: var(--font-plex-mono), monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+/* Broadsheet double rule */
+.rule-double {
+    border-top: 3px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    height: 5px;
+}
+
+.rule-single {
+    border-top: 1px solid var(--rule);
+}
+
+.rule-accent {
+    border-top: 2px solid var(--accent);
+}
+
+/* Drop cap */
+.drop-cap::first-letter {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-weight: 600;
+    float: left;
+    font-size: 4.6em;
+    line-height: 0.78;
+    padding-right: 0.12em;
+    padding-top: 0.06em;
+    color: var(--accent);
+}
+
+/* Dotted leader (table-of-contents style) */
+.dotted-leader {
+    background-image: radial-gradient(circle, var(--muted) 1px, transparent 1.2px);
+    background-size: 7px 2px;
+    background-repeat: repeat-x;
+    background-position: 0 55%;
+    flex: 1;
+    min-width: 16px;
+    margin: 0 0.5rem;
+    opacity: 0.55;
+}
+
+/* Rubber stamp */
+.rubber-stamp {
+    font-family: var(--font-plex-mono), monospace;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 0.15rem 0.55rem;
+    transform: rotate(-6deg);
+    opacity: 0.85;
+    border-radius: 2px;
+    mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+}
+
+/* Chapter number */
+.chapter-no {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* Cards */
 .editorial-card {
     background: var(--paper);
-    border: 1px solid #44403c;
+    border: 1px solid var(--rule);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .editorial-card:hover {
     border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 20px 40px -20px rgba(180, 140, 91, 0.15);
+    box-shadow: 8px 8px 0 -4px var(--accent-soft);
 }
 
-.serif-title {
-    font-family: var(--font-playfair), serif;
-    letter-spacing: -0.02em;
+/* Underline reveal for links */
+.link-underline {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 2px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.3s ease;
 }
 
-.sans-body {
-    font-family: var(--font-dm-sans), sans-serif;
-}
-
-.border-ink {
-    border-color: var(--ink);
+.link-underline:hover {
+    background-size: 100% 2px;
 }
 
 .section-label {
-    @apply text-[10px] uppercase font-black tracking-[0.2em] text-muted mb-5;
+    @apply mono-label text-[10px] text-muted mb-5;
 }
 
 .btn-editorial {
     @apply border-2 border-foreground bg-transparent text-foreground px-6 py-2 transition-all duration-300 font-medium;
+    font-family: var(--font-plex-mono), monospace;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-size: 12px;
 }
 
 .btn-editorial:hover {
     @apply bg-foreground text-background;
 }
 
-::-webkit-scrollbar {
-    width: 6px;
-}
-::-webkit-scrollbar-track {
-    background: var(--background);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--muted);
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent);
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--rule-strong); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Motion ─────────────────────────────────────────────────────────── */
 
 .fade-up {
-    animation: fadeUp 0.6s ease forwards;
+    animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     opacity: 0;
 }
 
 @keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .fade-in {
-    animation: fadeIn 0.5s ease forwards;
+    animation: fadeIn 0.45s ease forwards;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes blink {
@@ -132,20 +203,14 @@ body::after {
     50% { opacity: 0; }
 }
 
-@keyframes revealWidth {
+@keyframes ruleGrow {
     from { transform: scaleX(0); }
     to { transform: scaleX(1); }
 }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

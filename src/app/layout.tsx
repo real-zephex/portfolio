@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { playfair, dmSans } from "@/fonts/fonts";
+import { fraunces, newsreader, plexMono } from "@/fonts/fonts";
 import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
@@ -60,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${newsreader.variable} ${plexMono.variable}`}>
       <Analytics />
       <body className="antialiased font-sans" data-theme="editorial">
         {children}
