@@ -191,14 +191,20 @@ const InfoContent = ({ onCopy }: { onCopy: (m: string) => void }) => {
               <span className="font-semibold not-italic underline decoration-accent decoration-4 underline-offset-4">
                 zephex
               </span>
-              . A B.Tech student studying Computer Science and Cyber Security,
+              . A third-year B.Tech student in Computer Science &amp; Cyber Security,
               building things for the web that are fast, secure, and well-designed.
             </p>
             <p className="mt-6 text-lg leading-relaxed sans-body text-foreground/90">
               I spend most of my time on full-stack web development, CLI tools,
-              Linux servers, and the occasional Minecraft session. This site is a
-              living archive of recent projects and experiments — a desk drawer of
-              things I&apos;ve made and learned.
+              and Linux servers — plus the occasional Minecraft session. I&apos;ve
+              built agentic AI assistants that live in the terminal and on
+              Telegram, audited real-world web platforms (findings reported to
+              CERT-In), and I&apos;m currently learning Rust with plans to rewrite
+              my favourite Go project in it.
+            </p>
+            <p className="mt-5 text-lg leading-relaxed sans-body text-foreground/85">
+              This site is a living archive of those projects and experiments — a
+              desk drawer of things I&apos;ve made and learned along the way.
             </p>
           </div>
           <div className="lg:col-span-4">
