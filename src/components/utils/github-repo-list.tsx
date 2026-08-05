@@ -5,6 +5,17 @@ import { getAllRepos } from "../lib/github";
 import Link from "next/link";
 import { FiArrowUpRight, FiSearch } from "react-icons/fi";
 
+function openInNewTab(url: string) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+
 interface Repo {
   name: string;
   description: string;
@@ -167,11 +178,21 @@ const GitHubRepoList = () => {
               const recent = isRecent(repo.updatedAt);
               const langColor = LANGUAGE_COLORS[repo.language] || "#888";
               return (
-                <Link
+                <div
                   key={repo.name}
-                  href={repo.url}
-                  target="_blank"
-                  className="group relative flex flex-col p-6 editorial-card animate-fade-in"
+                  role="link"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    // Never hijack clicks on real links inside the card
+                    if ((e.target as HTMLElement).closest("a, button, [role='link']")) return;
+                    openInNewTab(repo.url);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !(e.target as HTMLElement).closest("a, button, [role='link']")) {
+                      openInNewTab(repo.url);
+                    }
+                  }}
+                  className="group relative flex flex-col p-6 editorial-card animate-fade-in cursor-pointer"
                   style={{ animationDelay: `${i * 0.03}s` }}
                 >
                   <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-accent/0 group-hover:bg-accent/70 transition-colors duration-300" />
@@ -181,8 +202,15 @@ const GitHubRepoList = () => {
                       {recent && (
                         <span className="w-2 h-2 rounded-full bg-accent shrink-0 mt-1 animate-pulse" />
                       )}
-                      <h3 className="serif-title text-xl font-semibold text-foreground group-hover:text-accent transition-colors truncate">
-                        {repo.name}
+                      <h3 className="serif-title text-xl font-semibold truncate">
+                        <Link
+                          href={repo.url}
+                          target="_blank"
+                          rel="noopener"
+                          className="text-foreground group-hover:text-accent transition-colors"
+                        >
+                          {repo.name}
+                        </Link>
                       </h3>
                       {FEATURED[repo.name] && (
                         <span className="rubber-stamp text-[8px] shrink-0">Featured</span>
@@ -213,25 +241,13 @@ const GitHubRepoList = () => {
                     </div>
                     <div className="flex items-center gap-3">
                       {FEATURED[repo.name] && (
-                        <span
-                          role="link"
-                          tabIndex={0}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            window.location.href = FEATURED[repo.name];
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              window.location.href = FEATURED[repo.name];
-                            }
-                          }}
-                          className="text-accent cursor-pointer hover:underline"
+                        <Link
+                          href={FEATURED[repo.name]}
+                          onClick={(e) => e.stopPropagation()}
+                          className="text-accent hover:underline"
                         >
                           Details
-                        </span>
+                        </Link>
                       )}
                       <span className={recent ? "text-accent/70" : ""}>
                         {formatRelativeTime(repo.updatedAt)}
@@ -241,7 +257,7 @@ const GitHubRepoList = () => {
                       </span>
                     </div>
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>

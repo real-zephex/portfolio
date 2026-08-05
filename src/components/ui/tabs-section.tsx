@@ -4,6 +4,17 @@ import Link from "next/link";
 import React, { JSX, useState, useCallback } from "react";
 
 import Toast from "../utils/toast";
+
+function openInNewTab(url: string) {
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
 import GitHubRepoList from "../utils/github-repo-list";
 import ResumeGate from "../resume/resume-gate";
 import {
@@ -277,7 +288,19 @@ const AppsContent = () => {
         {subdomains.map((app, index) => (
           <article
             key={app.name}
-            className="editorial-card p-7 group fade-up"
+            role="link"
+            tabIndex={0}
+            onClick={(e) => {
+              // Never hijack clicks on real links inside the card
+              if ((e.target as HTMLElement).closest("a, button, [role='link']")) return;
+              openInNewTab(app.url);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !(e.target as HTMLElement).closest("a, button, [role='link']")) {
+                openInNewTab(app.url);
+              }
+            }}
+            className="editorial-card p-7 group fade-up cursor-pointer"
             style={{ animationDelay: `${index * 0.08}s` }}
           >
             <div className="flex justify-between items-start mb-6">
@@ -286,8 +309,15 @@ const AppsContent = () => {
               </span>
               <span className="rubber-stamp text-[9px]">Live</span>
             </div>
-            <h3 className="serif-title text-2xl font-semibold mb-1.5 group-hover:text-accent transition-colors">
-              {app.name}
+            <h3 className="serif-title text-2xl font-semibold mb-1.5">
+              <Link
+                href={app.url}
+                target="_blank"
+                rel="noopener"
+                className="group-hover:text-accent transition-colors"
+              >
+                {app.name}
+              </Link>
             </h3>
             <p className="mono-label text-[10px] text-accent mb-4 truncate">
               {app.url.replace("https://", "")}
